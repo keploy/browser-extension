@@ -1,0 +1,70 @@
+{
+    "name": "keploy-plugin",
+    "description": "",
+    "version": "0.0.1",
+    "homepage": "http://chrome.google.com/webstore",
+    "author": "ENTER YOUR NAME HERE",
+    "repository": {
+        "type": "git",
+        "url": "ENTER GIT REPO URL"
+    },
+    "scripts": {
+        "start": "xt-build -e dev -w",
+        "start:firefox": "xt-build -e dev -p firefox -w",
+        "build": "xt-build -e prod",
+        "build:firefox": "xt-build -e prod -p firefox",
+        "clean": "xt-clean",
+        "docs": "xt-docs",
+        "test": "xt-test",
+        "coverage": "nyc --reporter=lcov npm run test",
+        "sync": "xt-sync"
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ]
+    },
+    "eslintIgnore": [
+        "test/**/*"
+    ],
+    "devDependencies": {
+        "extension-cli": "latest",
+        "html-webpack-plugin": "^5.5.0",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^4.10.0",
+        "webpack-dev-middleware": "^5.3.3",
+        "webpack-dev-server": "^4.9.3"
+    },
+    "xtdocs": {
+        "source": {
+            "include": [
+                "README.md",
+                "src"
+            ]
+        }
+    },
+    "xtbuild": {
+        "js_bundles": [
+            {
+                "name": "background",
+                "src": "./src/background/index.js"
+            },
+            {
+                "name": "content",
+                "src": "./src/content/*.js"
+            },
+            {
+                "name": "kscript",
+                "src": "./src/kscript.js"
+            },{
+                "name":"index",
+                "src":"./src/index.js"
+            }
+        ]
+    },
+    "dependencies": {
+        "flat": "^5.0.2",
+        "jshashes": "^1.0.8",
+        "mock-xmlhttprequest": "^7.0.4"
+    }
+}
