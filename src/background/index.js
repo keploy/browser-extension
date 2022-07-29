@@ -55,79 +55,26 @@ startPolling({
 })
 
 var appid = ""
-var testName = ""
 
-chrome.runtime.onSuspend.addListener(function() {
-  console.log("Unloading.");
-  chrome.storage.sync.set({"appid": appid}, function() {});
-});
-
-chrome.storage.sync.get("appid", function(data) {
-  appid = data
-  console.log("shouldn't be an empty object", data);
-});
-
-// let x = chrome.scripting.RegisteredContentScript()
-// console.log("chrome.scripting.RegisteredContentScript: ", x)
-// chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab){
-//   console.log("tabId", tabId, " tab: ", tab)
-  // try{
-
-    // await chrome.scripting.registerContentScripts(
-      chrome.scripting.getRegisteredContentScripts(
-        {ids: ["1"]}, (scripts) => {
-          if(scripts != null || scripts.length == 0){
-            chrome.scripting.registerContentScripts(
-              [{
-                 world: "MAIN", 
-                 id: "1", 
-                 js: [ `kscript.js`], 
-                 runAt: "document_start",
-                 allFrames: true,
-                 matches: ["<all_urls>"]
-              }],
-            )        
-          }
-        }
-      )
-    // chrome.scripting.registerContentScripts(
-    //   [{
-    //      world: "MAIN", 
-    //      id: "1", 
-    //      js: [ `kscript.js`], 
-    //      runAt: "document_start",
-    //      allFrames: true,
-    //      matches: ["<all_urls>"]
-    //   }],
-      // function(){
-      //   if(!chrome.runtime.lastError){
-      //     // console.log(window.foo)
-      //     console.log("registerContentScripts injected")
-      //   }
-      //   else{
-      //     console.log(chrome.runtime.lastError)
-      //   }
-      // },
-    // )
-  // }
-  // catch(err){
-  //   console.log(err)
-  // }
-// })
-
-// chrome.scripting.registerContentScripts(
-//   [{
-//      world: "MAIN", 
-//      id: "2", 
-//      js: [ `index.js`], 
-//      runAt: "document_start",
-//      allFrames: true,
-//      matches: ["<all_urls>"]
-//   }],)
+chrome.scripting.getRegisteredContentScripts(
+  {ids: ["1"]}, (scripts) => {
+    if(scripts != null || scripts.length == 0){
+      chrome.scripting.registerContentScripts(
+        [{
+            world: "MAIN", 
+            id: "1", 
+            js: [ `kscript.js`], 
+            runAt: "document_start",
+            allFrames: true,
+            matches: ["<all_urls>"]
+        }],
+      )        
+    }
+  }
+)
 
 chrome.runtime.onMessageExternal.addListener(async (message, sender, sendResponse) => {
   console.log("event triggered", message)
-  // chrome.scripting.registerContentScripts(scripts: [chrome.scripting.RegisteredContentScript])
 
   if (message.action === "execute") {
     console.log("execute the following command: ", message.command.command)
@@ -135,7 +82,7 @@ chrome.runtime.onMessageExternal.addListener(async (message, sender, sendRespons
       case "open":
         // console.log("called open")
         // setTimeout(() => {
-          // console.log("ended open command")
+        //   console.log("ended open command")
           sendResponse(true);
         // }, 3000)
         break;

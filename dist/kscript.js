@@ -3909,7 +3909,7 @@ function registerXML() {
             // XMLHttpRequest = undefined;
         }
         else if (dataFromPage.event === "playbackStopped") {
-            // sessionStorage.clear();
+            sessionStorage.clear();
             XMLHttpRequest = originalXMLHttpRequest;
         }
         // @ts-ignore
