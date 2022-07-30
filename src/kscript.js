@@ -93,8 +93,9 @@ function RecordXMLRequests() {
         console.log("before xmlHttpRequest send: ", this);
         this.addEventListener("readystatechange", function (e) {
             console.log(" *** ", this.status, " ", this.response, " ", this.readyState)
+            let isPushed = false
             // @ts-ignore
-            if (this.readyState == this.DONE || (this.requestArr[0] === "POST" && this.readyState === 3) || (this.readyState === 3 && this.status != 0 && this.response!=undefined )) {
+            if ((this.readyState == this.DONE || (this.requestArr[0] === "POST" && this.readyState === 3) || (this.readyState === 3 && this.status != 0 && this.response!=undefined )) && !isPushed ) {
                 // @ts-ignore
                 console.log("---", this.method, ", ", this.requestArr[0], ", ", isValidJSONString(args[0]) ? "" : args[0]);
                 // @ts-ignore
@@ -139,6 +140,7 @@ function RecordXMLRequests() {
                 else{
                     resp = this.response
                 }
+                isPushed = true
                 if (storedDepArrString != null) {
                     let arr = JSON.parse(storedDepArrString);
                     arr.push({ [hashPwd]: {
@@ -152,12 +154,12 @@ function RecordXMLRequests() {
                 }
                 else {
                     sessionStorage.setItem("depArr", JSON.stringify([{ [hashPwd]: {
-                                status: this.status,
-                                headers: getHeaders(this.getAllResponseHeaders()),
-                                body: resp,
-                                response_type: this.responseType
-                            }
-                        }]));
+                            status: this.status,
+                            headers: getHeaders(this.getAllResponseHeaders()),
+                            body: resp,
+                            response_type: this.responseType
+                        }
+                    }]));
                 }
                 // }
             }

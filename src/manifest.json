@@ -3,8 +3,8 @@
     "short_name": "K-Plugin",
     "description": "",
     "homepage_url": "https://keploy.io/",
-    "version": "0.0.1",
-    "version_name": "0.0.1",
+    "version": "0.1.2",
+    "version_name": "0.1.2",
     "default_locale": "en",
     "minimum_chrome_version": "88",
     "icons": {
