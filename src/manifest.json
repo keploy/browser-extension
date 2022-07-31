@@ -1,20 +1,20 @@
 {
-    "name": "Keploy plugin",
+    "name": "Keploy Plugin",
     "short_name": "K-Plugin",
     "description": "",
     "homepage_url": "https://keploy.io/",
-    "version": "0.1.2",
-    "version_name": "0.1.2",
+    "version": "0.1.0",
+    "version_name": "0.1.0",
     "default_locale": "en",
     "minimum_chrome_version": "88",
     "icons": {
-        "128": "assets/img/128x128.png"
+        "128": "assets/img/keploy-128x128.png"
     },
     "action": {
         "default_icon": {
-            "16": "assets/img/16x16.png",
-            "24": "assets/img/24x24.png",
-            "32": "assets/img/32x32.png"
+            "16": "assets/img/keploy-16x16.png",
+            "24": "assets/img/keploy-24x24.png",
+            "32": "assets/img/keploy-32x32.png"
         },
         "default_title": "__MSG_appName__"
     },
