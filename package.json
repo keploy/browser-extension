@@ -56,9 +56,10 @@
             {
                 "name": "kscript",
                 "src": "./src/kscript.js"
-            },{
-                "name":"index",
-                "src":"./src/index.js"
+            },
+            {
+                "name": "index",
+                "src": "./src/index.js"
             }
         ]
     },
