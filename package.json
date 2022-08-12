@@ -46,20 +46,20 @@
     "xtbuild": {
         "js_bundles": [
             {
-                "name": "background",
+                "name": "background/index",
                 "src": "./src/background/index.js"
             },
             {
-                "name": "content",
+                "name": "content/index",
                 "src": "./src/content/*.js"
             },
             {
                 "name": "kscript",
                 "src": "./src/kscript.js"
-            },
+            }, 
             {
-                "name": "index",
-                "src": "./src/index.js"
+                "name": "utils",
+                "src": "./src/utils.js"
             }
         ]
     },

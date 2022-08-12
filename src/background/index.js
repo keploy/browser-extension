@@ -1,6 +1,8 @@
 /* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
 
+const {tabListener} = require("./utils")
+
 // import browser from 'webextension-polyfill'
 // import UAParser from 'ua-parser-js'
 
@@ -42,23 +44,15 @@ function startPolling(payload) {
 startPolling({
   name: "Selenium IDE plugin",
   version: "1.0.0",
-  commands: [
-    {
-      id: "open",
-      name: "open"
-    },
-    {
-      id: "infraRecordingClose",
-      name: "Infra Recording Close"
-    }
-  ]
+  commands: []
 })
 
 var appid = ""
 
 chrome.scripting.getRegisteredContentScripts(
   {ids: ["1"]}, (scripts) => {
-    if(scripts != null || scripts.length == 0){
+    if(scripts.length === 0){
+      console.log("registers content script!!!")
       chrome.scripting.registerContentScripts(
         [{
             world: "MAIN", 
@@ -76,159 +70,27 @@ chrome.scripting.getRegisteredContentScripts(
 chrome.runtime.onMessageExternal.addListener(async (message, sender, sendResponse) => {
   console.log("event triggered", message)
 
-  if (message.action === "execute") {
-    console.log("execute the following command: ", message.command.command)
-    switch (message.command.command) {
-      case "open":
-        // console.log("called open")
-        // setTimeout(() => {
-        //   console.log("ended open command")
-          sendResponse(true);
-        // }, 3000)
-        break;
-      case "infraRecordingClose":
-        sendResponse(true);
-        break;
-      case "close":
-        break;
-    }
-    // sendResponse(false);
-  }
-  else {
-
-    // stop selenium recording before closing the rescording tab
-    if(message.event==="recordingStopped"){
-      console.log("removed listener")
-      chrome.storage.sync.get(['tabid'], function(d) {
-        console.log("infraRecordingClose: ", d)
-        chrome.tabs.sendMessage(d.tabid, {event: "infraRecordingClose"}, (resp) => {
-          if(!chrome.runtime.lastError && resp) {
-            console.log("infraRecordingClose sendMessage returned: ", resp)
-            chrome.storage.sync.remove('tabid')
-          } else {
-            console.log(chrome.runtime.lastError)
-          }
-        })
+  if(message.event==="recordingStopped" || message.event==="playbackStopped"){
+    chrome.storage.sync.get(['tabid'], function(d) {
+      chrome.tabs.sendMessage(d.tabid, {event: message.event, testName: message.options.testName, appid: d.appid, tabId: d.tabid}, (resp) => {
+        if(!chrome.runtime.lastError && resp) {
+          chrome.storage.sync.remove('tabid')
+        } else {
+          console.log(chrome.runtime.lastError)
+        }
       })
-    }
-    else if (message.event==="projectLoaded"){
-      appid = message.options.projectName
-      chrome.storage.sync.set({"appid": appid}, function() {});
-    }
-    else if(message.event==="playbackStarted"){
-      console.log("into playback background")
-      chrome.tabs.onUpdated.addListener(
-        tabListener
-      )
-  
-    }
-    else if(message.event==="playbackStopped"){
-      chrome.storage.sync.get(['tabid'], function(d) {
-        console.log("playbackStopped: ", d)
-        chrome.tabs.sendMessage(d.tabid, {event: message.event, testName: message.options.testName, appid: d.appid, tabId: d.tabid}, (resp) => {
-          if(!chrome.runtime.lastError && resp) {
-            console.log("playbackStopped sendMessage returned: ", resp)
-            chrome.storage.sync.remove('tabid')
-          } else {
-            console.log(chrome.runtime.lastError)
-          }
-        })
-      })
-    }
-    else if(message.event !== "commandRecorded"){
-      chrome.tabs.onUpdated.addListener(
-        tabListener
-      )
-    }
-  
-    
-    sendResponse(true);
+    })
   }
-  function tabListener(tabId, changeInfo, tab) {
-    if(
-      tab.active === true
-    ){
-      console.log(tab)
-      chrome.storage.sync.get(["appid"], function(d) {
-        chrome.storage.sync.set({ "tabid": tabId, ...d}, function(){})
-        appid = d.appid
-        console.log("started: ", d, " ", appid)
-        let data = {
-          testName: message.options.testName, 
-          event: message.event,
-          appid: appid,
-          tabId: tabId
-        }
-        if(message.event == "playbackStarted"){
-
-          chrome.scripting.executeScript(
-            {
-              target: {tabId},
-              world: "MAIN",
-              func: function(appid, testName, tabid){
-                let fetched = false
-                const requestDeps = new XMLHttpRequest()
-                requestDeps.open('GET', `http://localhost:8081/api/regression/selenium/get?appid=` + appid + `&testName=` + testName, false)
-                requestDeps.send(null)
-                if(requestDeps.status == 200 && sessionStorage.getItem("depArr")==null){
-                    const docs = JSON.parse( requestDeps.responseText )
-                    // console.log("** ** ",requestDeps.responseText)
-                    sessionStorage.setItem("depArr", JSON.stringify(docs[0].deps))
-                    var dataObj = {"event":"playbackStarted", "testName":testName, "appid": appid, "tabId": tabid};
-                    let storeEvent = new CustomEvent('eventMode', {"detail":dataObj});
-                    document.dispatchEvent(storeEvent);
-                }
-                // fetch(`http://localhost:8081/api/regression/selenium/get?appid=` + appid + `&testName=` + testName)
-                //     .then((response) => response.json())
-                //     .then((data) => {
-                //     console.log("fetched data: ", data);
-                //     fetched = true
-                //     if (data.length == 1 && sessionStorage.getItem("depArr")==null) {
-                //         sessionStorage.setItem("depArr", JSON.stringify(data[0].deps));
-                //         var dataObj = {"event":"playbackStarted", "testName":testName, "appid": appid, "tabId": tabid};
-                //         let storeEvent = new CustomEvent('eventMode', {"detail":dataObj});
-                //         document.dispatchEvent(storeEvent);
-                //         // chrome.tabs.onUpdated.removeListener(tabListener)
-                //         // return sendResponse(true);
-                //         return true
-                //     }
-                // });
-              },
-              args: [appid, message.options.testName, tabId],
-              injectImmediately: true,
-            },
-            function(results){
-              console.log(results)
-              if(results != undefined){
-                chrome.tabs.onUpdated.removeListener(tabListener)
-              }
-              // chrome.tabs.sendMessage(tabId, data, (resp) => {
-              //   if(!chrome.runtime.lastError && resp) {
-              //     console.log(resp)
-              //     chrome.tabs.onUpdated.removeListener(tabListener)
-              //   } else {
-              //     console.log(chrome.runtime.lastError)
-              //   }
-              // });
-              // if(result){
-                // chrome.tabs.onUpdated.removeListener(tabListener)
-              // }
-            },
-          )
-        }
-        else {
-          chrome.tabs.sendMessage(tabId, data, (resp) => {
-            if(!chrome.runtime.lastError && resp) {
-              console.log(resp)
-              chrome.tabs.onUpdated.removeListener(tabListener)
-            } else {
-              console.log(chrome.runtime.lastError)
-            }
-          });
-        }
-      });
-
-    }
+  else if (message.event==="projectLoaded"){
+    appid = message.options.projectName
+    chrome.storage.sync.set({"appid": appid}, function() {});
   }
+  else if(message.event !== "commandRecorded"){
+    chrome.tabs.onUpdated.addListener(
+      tabListener(message, appid)
+    )
+  }
+  
+  sendResponse(true);
 
 });

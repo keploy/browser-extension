@@ -1,7 +1,7 @@
 {
     "name": "Keploy Plugin",
     "short_name": "K-Plugin",
-    "description": "",
+    "description": "Selenium extension to automatically record and mock the backend calls using Keploy for testing. This cannot work without keploy backend.",
     "homepage_url": "https://keploy.io/",
     "version": "0.1.0",
     "version_name": "0.1.0",
@@ -32,12 +32,12 @@
 
     "background": 
     {
-        "service_worker": "background.js"
+        "service_worker": "background/index.js"
     },
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["content.js"],
+            "js": ["content/index.js"],
             "run_at": "document_start",
             "match_about_blank": true,
             "all_frames": true
