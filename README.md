@@ -12,14 +12,14 @@ Just need to install the web extension and make sure that sync is enabled on you
 account. It will automatically configure with Selenium-IDE for testing.
 
 ## Usage
-###Record
+### Record
 All the external calls will be recorded during recording in Selenium-IDE. Steps for recording:
 1. Open the Selenium-Ide and load the project.
 2. Create a new test (testName should not be "Untitled").
 3. Enter the URL and start doing assertions.
 4. Stop the selenium recorder before closing the recoding tab.
 
-###Playback
+### Playback
 The external calls are mocked with the recorded outputs during playback of the selenium test. Steps to playback:
 1. Run the selenium recorded tests.
 
