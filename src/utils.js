@@ -57,7 +57,6 @@ function getResponseHeaders(headers) {
         const header = parts.shift();
         const value = parts.join(": ");
         if (typeof header === typeof "string" && header !== undefined) {
-            // @ts-ignore
             headerMap[header] = value;
         }
     });

@@ -17,9 +17,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     return sendResponse(true);
 });
     
-function sendDataToExtension(event, testName, appid, tabId) {
-    var dataObj = {"event":event, "testName":testName, "appid": appid, "tabId": tabId};
-    let storeEvent = new CustomEvent('eventMode', {"detail":dataObj});
-        
+function sendDataToExtension(event, testName, appId, tabId) {
+    var meta = {"seleniunEvent":event, "testName":testName, "appId": appId, "tabId": tabId};
+    
+    let storeEvent = new CustomEvent('kselenium', {"detail":meta});
     document.dispatchEvent(storeEvent);
 }

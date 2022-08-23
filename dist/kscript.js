@@ -1,2 +1,3779 @@
-/*! For license information please see kscript.js.LICENSE.txt */
-(()=>{var e={444:e=>{function t(e){return e&&e.constructor&&"function"==typeof e.constructor.isBuffer&&e.constructor.isBuffer(e)}function r(e){return e}function n(e,n){const s=(n=n||{}).delimiter||".",o=n.maxDepth,i=n.transformKey||r,a={};return function e(r,h,u){u=u||1,Object.keys(r).forEach((function(d){const c=r[d],l=n.safe&&Array.isArray(c),p=Object.prototype.toString.call(c),f=t(c),E="[object Object]"===p||"[object Array]"===p,g=h?h+s+i(d):i(d);if(!l&&!f&&E&&Object.keys(c).length&&(!n.maxDepth||u<o))return e(c,g,u+1);a[g]=c}))}(e),a}e.exports=n,n.flatten=n,n.unflatten=function e(s,o){const i=(o=o||{}).delimiter||".",a=o.overwrite||!1,h=o.transformKey||r,u={};if(t(s)||"[object Object]"!==Object.prototype.toString.call(s))return s;function d(e){const t=Number(e);return isNaN(t)||-1!==e.indexOf(".")||o.object?e:t}return s=Object.keys(s).reduce((function(e,t){const r=Object.prototype.toString.call(s[t]);return"[object Object]"!==r&&"[object Array]"!==r||function(e){const t=Object.prototype.toString.call(e),r="[object Object]"===t;return!e||("[object Array]"===t?!e.length:r?!Object.keys(e).length:void 0)}(s[t])?(e[t]=s[t],e):function(e,t,r){return Object.keys(r).reduce((function(t,n){return t[e+i+n]=r[n],t}),t)}(t,e,n(s[t],o))}),{}),Object.keys(s).forEach((function(t){const r=t.split(i).map(h);let n=d(r.shift()),c=d(r[0]),l=u;for(;void 0!==c;){if("__proto__"===n)return;const e=Object.prototype.toString.call(l[n]),t="[object Object]"===e||"[object Array]"===e;if(!a&&!t&&void 0!==l[n])return;(a&&!t||!a&&null==l[n])&&(l[n]="number"!=typeof c||o.object?{}:[]),l=l[n],r.length>0&&(n=d(r.shift()),c=d(r[0]))}l[n]=e(s[t],o)})),u}},887:(e,t,r)=>{var n;!function(){var s;function o(e){var t,r,n,s="",o=-1;if(e&&e.length)for(n=e.length;(o+=1)<n;)t=e.charCodeAt(o),r=o+1<n?e.charCodeAt(o+1):0,55296<=t&&t<=56319&&56320<=r&&r<=57343&&(t=65536+((1023&t)<<10)+(1023&r),o+=1),t<=127?s+=String.fromCharCode(t):t<=2047?s+=String.fromCharCode(192|t>>>6&31,128|63&t):t<=65535?s+=String.fromCharCode(224|t>>>12&15,128|t>>>6&63,128|63&t):t<=2097151&&(s+=String.fromCharCode(240|t>>>18&7,128|t>>>12&63,128|t>>>6&63,128|63&t));return s}function i(e,t){var r=(65535&e)+(65535&t);return(e>>16)+(t>>16)+(r>>16)<<16|65535&r}function a(e,t){return e<<t|e>>>32-t}function h(e,t){for(var r,n=t?"0123456789ABCDEF":"0123456789abcdef",s="",o=0,i=e.length;o<i;o+=1)r=e.charCodeAt(o),s+=n.charAt(r>>>4&15)+n.charAt(15&r);return s}function u(e){var t,r=32*e.length,n="";for(t=0;t<r;t+=8)n+=String.fromCharCode(e[t>>5]>>>24-t%32&255);return n}function d(e){var t,r=32*e.length,n="";for(t=0;t<r;t+=8)n+=String.fromCharCode(e[t>>5]>>>t%32&255);return n}function c(e){var t,r=8*e.length,n=Array(e.length>>2),s=n.length;for(t=0;t<s;t+=1)n[t]=0;for(t=0;t<r;t+=8)n[t>>5]|=(255&e.charCodeAt(t/8))<<t%32;return n}function l(e){var t,r=8*e.length,n=Array(e.length>>2),s=n.length;for(t=0;t<s;t+=1)n[t]=0;for(t=0;t<r;t+=8)n[t>>5]|=(255&e.charCodeAt(t/8))<<24-t%32;return n}function p(e,t){var r,n,s,o,i,a,h,u,d=t.length,c=Array();for(o=(a=Array(Math.ceil(e.length/2))).length,r=0;r<o;r+=1)a[r]=e.charCodeAt(2*r)<<8|e.charCodeAt(2*r+1);for(;a.length>0;){for(i=Array(),s=0,r=0;r<a.length;r+=1)s=(s<<16)+a[r],s-=(n=Math.floor(s/d))*d,(i.length>0||n>0)&&(i[i.length]=n);c[c.length]=s,a=i}for(h="",r=c.length-1;r>=0;r--)h+=t.charAt(c[r]);for(u=Math.ceil(8*e.length/(Math.log(t.length)/Math.log(2))),r=h.length;r<u;r+=1)h=t[0]+h;return h}function f(e,t){var r,n,s,o="",i=e.length;for(t=t||"=",r=0;r<i;r+=3)for(s=e.charCodeAt(r)<<16|(r+1<i?e.charCodeAt(r+1)<<8:0)|(r+2<i?e.charCodeAt(r+2):0),n=0;n<4;n+=1)8*r+6*n>8*e.length?o+=t:o+="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(s>>>6*(3-n)&63);return o}s={VERSION:"1.0.6",Base64:function(){var e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",t="=",r=!0;this.encode=function(n){var s,i,a,h="",u=n.length;for(t=t||"=",n=r?o(n):n,s=0;s<u;s+=3)for(a=n.charCodeAt(s)<<16|(s+1<u?n.charCodeAt(s+1)<<8:0)|(s+2<u?n.charCodeAt(s+2):0),i=0;i<4;i+=1)h+=8*s+6*i>8*u?t:e.charAt(a>>>6*(3-i)&63);return h},this.decode=function(n){var s,o,i,a,h,u,d,c,l="",p=[];if(!n)return n;s=c=0,n=n.replace(new RegExp("\\"+t,"gi"),"");do{o=(d=e.indexOf(n.charAt(s+=1))<<18|e.indexOf(n.charAt(s+=1))<<12|(h=e.indexOf(n.charAt(s+=1)))<<6|(u=e.indexOf(n.charAt(s+=1))))>>16&255,i=d>>8&255,a=255&d,p[c+=1]=64===h?String.fromCharCode(o):64===u?String.fromCharCode(o,i):String.fromCharCode(o,i,a)}while(s<n.length);return l=p.join(""),l=r?function(e){var t,r,n,s,o,i,a=[];if(t=r=n=s=o=0,e&&e.length)for(i=e.length,e+="";t<i;)r+=1,(n=e.charCodeAt(t))<128?(a[r]=String.fromCharCode(n),t+=1):n>191&&n<224?(s=e.charCodeAt(t+1),a[r]=String.fromCharCode((31&n)<<6|63&s),t+=2):(s=e.charCodeAt(t+1),o=e.charCodeAt(t+2),a[r]=String.fromCharCode((15&n)<<12|(63&s)<<6|63&o),t+=3);return a.join("")}(l):l,l},this.setPad=function(e){return t=e||t,this},this.setTab=function(t){return e=t||e,this},this.setUTF8=function(e){return"boolean"==typeof e&&(r=e),this}},CRC32:function(e){var t,r,n,s=0,i=0;for(e=o(e),t=["00000000 77073096 EE0E612C 990951BA 076DC419 706AF48F E963A535 9E6495A3 0EDB8832 ","79DCB8A4 E0D5E91E 97D2D988 09B64C2B 7EB17CBD E7B82D07 90BF1D91 1DB71064 6AB020F2 F3B97148 ","84BE41DE 1ADAD47D 6DDDE4EB F4D4B551 83D385C7 136C9856 646BA8C0 FD62F97A 8A65C9EC 14015C4F ","63066CD9 FA0F3D63 8D080DF5 3B6E20C8 4C69105E D56041E4 A2677172 3C03E4D1 4B04D447 D20D85FD ","A50AB56B 35B5A8FA 42B2986C DBBBC9D6 ACBCF940 32D86CE3 45DF5C75 DCD60DCF ABD13D59 26D930AC ","51DE003A C8D75180 BFD06116 21B4F4B5 56B3C423 CFBA9599 B8BDA50F 2802B89E 5F058808 C60CD9B2 ","B10BE924 2F6F7C87 58684C11 C1611DAB B6662D3D 76DC4190 01DB7106 98D220BC EFD5102A 71B18589 ","06B6B51F 9FBFE4A5 E8B8D433 7807C9A2 0F00F934 9609A88E E10E9818 7F6A0DBB 086D3D2D 91646C97 ","E6635C01 6B6B51F4 1C6C6162 856530D8 F262004E 6C0695ED 1B01A57B 8208F4C1 F50FC457 65B0D9C6 ","12B7E950 8BBEB8EA FCB9887C 62DD1DDF 15DA2D49 8CD37CF3 FBD44C65 4DB26158 3AB551CE A3BC0074 ","D4BB30E2 4ADFA541 3DD895D7 A4D1C46D D3D6F4FB 4369E96A 346ED9FC AD678846 DA60B8D0 44042D73 ","33031DE5 AA0A4C5F DD0D7CC9 5005713C 270241AA BE0B1010 C90C2086 5768B525 206F85B3 B966D409 ","CE61E49F 5EDEF90E 29D9C998 B0D09822 C7D7A8B4 59B33D17 2EB40D81 B7BD5C3B C0BA6CAD EDB88320 ","9ABFB3B6 03B6E20C 74B1D29A EAD54739 9DD277AF 04DB2615 73DC1683 E3630B12 94643B84 0D6D6A3E ","7A6A5AA8 E40ECF0B 9309FF9D 0A00AE27 7D079EB1 F00F9344 8708A3D2 1E01F268 6906C2FE F762575D ","806567CB 196C3671 6E6B06E7 FED41B76 89D32BE0 10DA7A5A 67DD4ACC F9B9DF6F 8EBEEFF9 17B7BE43 ","60B08ED5 D6D6A3E8 A1D1937E 38D8C2C4 4FDFF252 D1BB67F1 A6BC5767 3FB506DD 48B2364B D80D2BDA ","AF0A1B4C 36034AF6 41047A60 DF60EFC3 A867DF55 316E8EEF 4669BE79 CB61B38C BC66831A 256FD2A0 ","5268E236 CC0C7795 BB0B4703 220216B9 5505262F C5BA3BBE B2BD0B28 2BB45A92 5CB36A04 C2D7FFA7 ","B5D0CF31 2CD99E8B 5BDEAE1D 9B64C2B0 EC63F226 756AA39C 026D930A 9C0906A9 EB0E363F 72076785 ","05005713 95BF4A82 E2B87A14 7BB12BAE 0CB61B38 92D28E9B E5D5BE0D 7CDCEFB7 0BDBDF21 86D3D2D4 ","F1D4E242 68DDB3F8 1FDA836E 81BE16CD F6B9265B 6FB077E1 18B74777 88085AE6 FF0F6A70 66063BCA ","11010B5C 8F659EFF F862AE69 616BFFD3 166CCF45 A00AE278 D70DD2EE 4E048354 3903B3C2 A7672661 ","D06016F7 4969474D 3E6E77DB AED16A4A D9D65ADC 40DF0B66 37D83BF0 A9BCAE53 DEBB9EC5 47B2CF7F ","30B5FFE9 BDBDF21C CABAC28A 53B39330 24B4A3A6 BAD03605 CDD70693 54DE5729 23D967BF B3667A2E ","C4614AB8 5D681B02 2A6F2B94 B40BBE37 C30C8EA1 5A05DF1B 2D02EF8D"].join(""),s^=-1,r=0,n=e.length;r<n;r+=1)i=255&(s^e.charCodeAt(r)),s=s>>>8^"0x"+t.substr(9*i,8);return(-1^s)>>>0},MD5:function(e){var t=!(!e||"boolean"!=typeof e.uppercase)&&e.uppercase,r=e&&"string"==typeof e.pad?e.pad:"=",n=!e||"boolean"!=typeof e.utf8||e.utf8;function s(e){return d(l(c(e=n?o(e):e),8*e.length))}function u(e,t){var r,s,i,a,h;for(e=n?o(e):e,t=n?o(t):t,(r=c(e)).length>16&&(r=l(r,8*e.length)),s=Array(16),i=Array(16),h=0;h<16;h+=1)s[h]=909522486^r[h],i[h]=1549556828^r[h];return a=l(s.concat(c(t)),512+8*t.length),d(l(i.concat(a),640))}function l(e,t){var r,n,s,o,a,h=1732584193,u=-271733879,d=-1732584194,c=271733878;for(e[t>>5]|=128<<t%32,e[14+(t+64>>>9<<4)]=t,r=0;r<e.length;r+=16)n=h,s=u,o=d,a=c,h=g(h,u,d,c,e[r+0],7,-680876936),c=g(c,h,u,d,e[r+1],12,-389564586),d=g(d,c,h,u,e[r+2],17,606105819),u=g(u,d,c,h,e[r+3],22,-1044525330),h=g(h,u,d,c,e[r+4],7,-176418897),c=g(c,h,u,d,e[r+5],12,1200080426),d=g(d,c,h,u,e[r+6],17,-1473231341),u=g(u,d,c,h,e[r+7],22,-45705983),h=g(h,u,d,c,e[r+8],7,1770035416),c=g(c,h,u,d,e[r+9],12,-1958414417),d=g(d,c,h,u,e[r+10],17,-42063),u=g(u,d,c,h,e[r+11],22,-1990404162),h=g(h,u,d,c,e[r+12],7,1804603682),c=g(c,h,u,d,e[r+13],12,-40341101),d=g(d,c,h,u,e[r+14],17,-1502002290),h=y(h,u=g(u,d,c,h,e[r+15],22,1236535329),d,c,e[r+1],5,-165796510),c=y(c,h,u,d,e[r+6],9,-1069501632),d=y(d,c,h,u,e[r+11],14,643717713),u=y(u,d,c,h,e[r+0],20,-373897302),h=y(h,u,d,c,e[r+5],5,-701558691),c=y(c,h,u,d,e[r+10],9,38016083),d=y(d,c,h,u,e[r+15],14,-660478335),u=y(u,d,c,h,e[r+4],20,-405537848),h=y(h,u,d,c,e[r+9],5,568446438),c=y(c,h,u,d,e[r+14],9,-1019803690),d=y(d,c,h,u,e[r+3],14,-187363961),u=y(u,d,c,h,e[r+8],20,1163531501),h=y(h,u,d,c,e[r+13],5,-1444681467),c=y(c,h,u,d,e[r+2],9,-51403784),d=y(d,c,h,u,e[r+7],14,1735328473),h=_(h,u=y(u,d,c,h,e[r+12],20,-1926607734),d,c,e[r+5],4,-378558),c=_(c,h,u,d,e[r+8],11,-2022574463),d=_(d,c,h,u,e[r+11],16,1839030562),u=_(u,d,c,h,e[r+14],23,-35309556),h=_(h,u,d,c,e[r+1],4,-1530992060),c=_(c,h,u,d,e[r+4],11,1272893353),d=_(d,c,h,u,e[r+7],16,-155497632),u=_(u,d,c,h,e[r+10],23,-1094730640),h=_(h,u,d,c,e[r+13],4,681279174),c=_(c,h,u,d,e[r+0],11,-358537222),d=_(d,c,h,u,e[r+3],16,-722521979),u=_(u,d,c,h,e[r+6],23,76029189),h=_(h,u,d,c,e[r+9],4,-640364487),c=_(c,h,u,d,e[r+12],11,-421815835),d=_(d,c,h,u,e[r+15],16,530742520),h=C(h,u=_(u,d,c,h,e[r+2],23,-995338651),d,c,e[r+0],6,-198630844),c=C(c,h,u,d,e[r+7],10,1126891415),d=C(d,c,h,u,e[r+14],15,-1416354905),u=C(u,d,c,h,e[r+5],21,-57434055),h=C(h,u,d,c,e[r+12],6,1700485571),c=C(c,h,u,d,e[r+3],10,-1894986606),d=C(d,c,h,u,e[r+10],15,-1051523),u=C(u,d,c,h,e[r+1],21,-2054922799),h=C(h,u,d,c,e[r+8],6,1873313359),c=C(c,h,u,d,e[r+15],10,-30611744),d=C(d,c,h,u,e[r+6],15,-1560198380),u=C(u,d,c,h,e[r+13],21,1309151649),h=C(h,u,d,c,e[r+4],6,-145523070),c=C(c,h,u,d,e[r+11],10,-1120210379),d=C(d,c,h,u,e[r+2],15,718787259),u=C(u,d,c,h,e[r+9],21,-343485551),h=i(h,n),u=i(u,s),d=i(d,o),c=i(c,a);return Array(h,u,d,c)}function E(e,t,r,n,s,o){return i(a(i(i(t,e),i(n,o)),s),r)}function g(e,t,r,n,s,o,i){return E(t&r|~t&n,e,t,s,o,i)}function y(e,t,r,n,s,o,i){return E(t&n|r&~n,e,t,s,o,i)}function _(e,t,r,n,s,o,i){return E(t^r^n,e,t,s,o,i)}function C(e,t,r,n,s,o,i){return E(r^(t|~n),e,t,s,o,i)}this.hex=function(e){return h(s(e),t)},this.b64=function(e){return f(s(e),r)},this.any=function(e,t){return p(s(e),t)},this.raw=function(e){return s(e)},this.hex_hmac=function(e,r){return h(u(e,r),t)},this.b64_hmac=function(e,t){return f(u(e,t),r)},this.any_hmac=function(e,t,r){return p(u(e,t),r)},this.vm_test=function(){return"900150983cd24fb0d6963f7d28e17f72"===hex("abc").toLowerCase()},this.setUpperCase=function(e){return"boolean"==typeof e&&(t=e),this},this.setPad=function(e){return r=e||r,this},this.setUTF8=function(e){return"boolean"==typeof e&&(n=e),this}},SHA1:function(e){var t=!(!e||"boolean"!=typeof e.uppercase)&&e.uppercase,r=e&&"string"==typeof e.pad?e.pad:"=",n=!e||"boolean"!=typeof e.utf8||e.utf8;function s(e){return u(c(l(e=n?o(e):e),8*e.length))}function d(e,t){var r,s,i,a,h;for(e=n?o(e):e,t=n?o(t):t,(r=l(e)).length>16&&(r=c(r,8*e.length)),s=Array(16),i=Array(16),a=0;a<16;a+=1)s[a]=909522486^r[a],i[a]=1549556828^r[a];return h=c(s.concat(l(t)),512+8*t.length),u(c(i.concat(h),672))}function c(e,t){var r,n,s,o,h,u,d,c,l=Array(80),p=1732584193,f=-271733879,y=-1732584194,_=271733878,C=-1009589776;for(e[t>>5]|=128<<24-t%32,e[15+(t+64>>9<<4)]=t,r=0;r<e.length;r+=16){for(o=p,h=f,u=y,d=_,c=C,n=0;n<80;n+=1)l[n]=n<16?e[r+n]:a(l[n-3]^l[n-8]^l[n-14]^l[n-16],1),s=i(i(a(p,5),E(n,f,y,_)),i(i(C,l[n]),g(n))),C=_,_=y,y=a(f,30),f=p,p=s;p=i(p,o),f=i(f,h),y=i(y,u),_=i(_,d),C=i(C,c)}return Array(p,f,y,_,C)}function E(e,t,r,n){return e<20?t&r|~t&n:e<40?t^r^n:e<60?t&r|t&n|r&n:t^r^n}function g(e){return e<20?1518500249:e<40?1859775393:e<60?-1894007588:-899497514}this.hex=function(e){return h(s(e),t)},this.b64=function(e){return f(s(e),r)},this.any=function(e,t){return p(s(e),t)},this.raw=function(e){return s(e)},this.hex_hmac=function(e,t){return h(d(e,t))},this.b64_hmac=function(e,t){return f(d(e,t),r)},this.any_hmac=function(e,t,r){return p(d(e,t),r)},this.vm_test=function(){return"900150983cd24fb0d6963f7d28e17f72"===hex("abc").toLowerCase()},this.setUpperCase=function(e){return"boolean"==typeof e&&(t=e),this},this.setPad=function(e){return r=e||r,this},this.setUTF8=function(e){return"boolean"==typeof e&&(n=e),this}},SHA256:function(e){e&&"boolean"==typeof e.uppercase&&e.uppercase;var t,r=e&&"string"==typeof e.pad?e.pad:"=",n=!e||"boolean"!=typeof e.utf8||e.utf8;function s(e,t){return u(D(l(e=t?o(e):e),8*e.length))}function a(e,t){e=n?o(e):e,t=n?o(t):t;var r,s=0,i=l(e),a=Array(16),h=Array(16);for(i.length>16&&(i=D(i,8*e.length));s<16;s+=1)a[s]=909522486^i[s],h[s]=1549556828^i[s];return r=D(a.concat(l(t)),512+8*t.length),u(D(h.concat(r),768))}function d(e,t){return e>>>t|e<<32-t}function c(e,t){return e>>>t}function E(e,t,r){return e&t^~e&r}function g(e,t,r){return e&t^e&r^t&r}function y(e){return d(e,2)^d(e,13)^d(e,22)}function _(e){return d(e,6)^d(e,11)^d(e,25)}function C(e){return d(e,7)^d(e,18)^c(e,3)}function D(e,r){var n,s,o,a,h,u,l,p,f,D,A,w,m,B=[1779033703,-1150833019,1013904242,-1521486534,1359893119,-1694144372,528734635,1541459225],S=new Array(64);for(e[r>>5]|=128<<24-r%32,e[15+(r+64>>9<<4)]=r,f=0;f<e.length;f+=16){for(n=B[0],s=B[1],o=B[2],a=B[3],h=B[4],u=B[5],l=B[6],p=B[7],D=0;D<64;D+=1)S[D]=D<16?e[D+f]:i(i(i(d(m=S[D-2],17)^d(m,19)^c(m,10),S[D-7]),C(S[D-15])),S[D-16]),A=i(i(i(i(p,_(h)),E(h,u,l)),t[D]),S[D]),w=i(y(n),g(n,s,o)),p=l,l=u,u=h,h=i(a,A),a=o,o=s,s=n,n=i(A,w);B[0]=i(n,B[0]),B[1]=i(s,B[1]),B[2]=i(o,B[2]),B[3]=i(a,B[3]),B[4]=i(h,B[4]),B[5]=i(u,B[5]),B[6]=i(l,B[6]),B[7]=i(p,B[7])}return B}this.hex=function(e){return h(s(e,n))},this.b64=function(e){return f(s(e,n),r)},this.any=function(e,t){return p(s(e,n),t)},this.raw=function(e){return s(e,n)},this.hex_hmac=function(e,t){return h(a(e,t))},this.b64_hmac=function(e,t){return f(a(e,t),r)},this.any_hmac=function(e,t,r){return p(a(e,t),r)},this.vm_test=function(){return"900150983cd24fb0d6963f7d28e17f72"===hex("abc").toLowerCase()},this.setUpperCase=function(e){return this},this.setPad=function(e){return r=e||r,this},this.setUTF8=function(e){return"boolean"==typeof e&&(n=e),this},t=[1116352408,1899447441,-1245643825,-373957723,961987163,1508970993,-1841331548,-1424204075,-670586216,310598401,607225278,1426881987,1925078388,-2132889090,-1680079193,-1046744716,-459576895,-272742522,264347078,604807628,770255983,1249150122,1555081692,1996064986,-1740746414,-1473132947,-1341970488,-1084653625,-958395405,-710438585,113926993,338241895,666307205,773529912,1294757372,1396182291,1695183700,1986661051,-2117940946,-1838011259,-1564481375,-1474664885,-1035236496,-949202525,-778901479,-694614492,-200395387,275423344,430227734,506948616,659060556,883997877,958139571,1322822218,1537002063,1747873779,1955562222,2024104815,-2067236844,-1933114872,-1866530822,-1538233109,-1090935817,-965641998]},SHA512:function(e){e&&"boolean"==typeof e.uppercase&&e.uppercase;var t,r=e&&"string"==typeof e.pad?e.pad:"=",n=!e||"boolean"!=typeof e.utf8||e.utf8;function s(e){return u(a(l(e=n?o(e):e),8*e.length))}function i(e,t){e=n?o(e):e,t=n?o(t):t;var r,s=0,i=l(e),h=Array(32),d=Array(32);for(i.length>32&&(i=a(i,8*e.length));s<32;s+=1)h[s]=909522486^i[s],d[s]=1549556828^i[s];return r=a(h.concat(l(t)),1024+8*t.length),u(a(d.concat(r),1536))}function a(e,r){var n,s,o,i=new Array(80),a=new Array(16),h=[new d(1779033703,-205731576),new d(-1150833019,-2067093701),new d(1013904242,-23791573),new d(-1521486534,1595750129),new d(1359893119,-1377402159),new d(-1694144372,725511199),new d(528734635,-79577749),new d(1541459225,327033209)],u=new d(0,0),l=new d(0,0),p=new d(0,0),f=new d(0,0),A=new d(0,0),w=new d(0,0),m=new d(0,0),B=new d(0,0),S=new d(0,0),F=new d(0,0),v=new d(0,0),b=new d(0,0),R=new d(0,0),O=new d(0,0),H=new d(0,0),N=new d(0,0),T=new d(0,0);for(void 0===t&&(t=[new d(1116352408,-685199838),new d(1899447441,602891725),new d(-1245643825,-330482897),new d(-373957723,-2121671748),new d(961987163,-213338824),new d(1508970993,-1241133031),new d(-1841331548,-1357295717),new d(-1424204075,-630357736),new d(-670586216,-1560083902),new d(310598401,1164996542),new d(607225278,1323610764),new d(1426881987,-704662302),new d(1925078388,-226784913),new d(-2132889090,991336113),new d(-1680079193,633803317),new d(-1046744716,-815192428),new d(-459576895,-1628353838),new d(-272742522,944711139),new d(264347078,-1953704523),new d(604807628,2007800933),new d(770255983,1495990901),new d(1249150122,1856431235),new d(1555081692,-1119749164),new d(1996064986,-2096016459),new d(-1740746414,-295247957),new d(-1473132947,766784016),new d(-1341970488,-1728372417),new d(-1084653625,-1091629340),new d(-958395405,1034457026),new d(-710438585,-1828018395),new d(113926993,-536640913),new d(338241895,168717936),new d(666307205,1188179964),new d(773529912,1546045734),new d(1294757372,1522805485),new d(1396182291,-1651133473),new d(1695183700,-1951439906),new d(1986661051,1014477480),new d(-2117940946,1206759142),new d(-1838011259,344077627),new d(-1564481375,1290863460),new d(-1474664885,-1136513023),new d(-1035236496,-789014639),new d(-949202525,106217008),new d(-778901479,-688958952),new d(-694614492,1432725776),new d(-200395387,1467031594),new d(275423344,851169720),new d(430227734,-1194143544),new d(506948616,1363258195),new d(659060556,-544281703),new d(883997877,-509917016),new d(958139571,-976659869),new d(1322822218,-482243893),new d(1537002063,2003034995),new d(1747873779,-692930397),new d(1955562222,1575990012),new d(2024104815,1125592928),new d(-2067236844,-1578062990),new d(-1933114872,442776044),new d(-1866530822,593698344),new d(-1538233109,-561857047),new d(-1090935817,-1295615723),new d(-965641998,-479046869),new d(-903397682,-366583396),new d(-779700025,566280711),new d(-354779690,-840897762),new d(-176337025,-294727304),new d(116418474,1914138554),new d(174292421,-1563912026),new d(289380356,-1090974290),new d(460393269,320620315),new d(685471733,587496836),new d(852142971,1086792851),new d(1017036298,365543100),new d(1126000580,-1676669620),new d(1288033470,-885112138),new d(1501505948,-60457430),new d(1607167915,987167468),new d(1816402316,1246189591)]),s=0;s<80;s+=1)i[s]=new d(0,0);for(e[r>>5]|=128<<24-(31&r),e[31+(r+128>>10<<5)]=r,o=e.length,s=0;s<o;s+=32){for(c(p,h[0]),c(f,h[1]),c(A,h[2]),c(w,h[3]),c(m,h[4]),c(B,h[5]),c(S,h[6]),c(F,h[7]),n=0;n<16;n+=1)i[n].h=e[s+2*n],i[n].l=e[s+2*n+1];for(n=16;n<80;n+=1)E(H,i[n-2],19),g(N,i[n-2],29),y(T,i[n-2],6),b.l=H.l^N.l^T.l,b.h=H.h^N.h^T.h,E(H,i[n-15],1),E(N,i[n-15],8),y(T,i[n-15],7),v.l=H.l^N.l^T.l,v.h=H.h^N.h^T.h,C(i[n],b,i[n-7],v,i[n-16]);for(n=0;n<80;n+=1)R.l=m.l&B.l^~m.l&S.l,R.h=m.h&B.h^~m.h&S.h,E(H,m,14),E(N,m,18),g(T,m,9),b.l=H.l^N.l^T.l,b.h=H.h^N.h^T.h,E(H,p,28),g(N,p,2),g(T,p,7),v.l=H.l^N.l^T.l,v.h=H.h^N.h^T.h,O.l=p.l&f.l^p.l&A.l^f.l&A.l,O.h=p.h&f.h^p.h&A.h^f.h&A.h,D(u,F,b,R,t[n],i[n]),_(l,v,O),c(F,S),c(S,B),c(B,m),_(m,w,u),c(w,A),c(A,f),c(f,p),_(p,u,l);_(h[0],h[0],p),_(h[1],h[1],f),_(h[2],h[2],A),_(h[3],h[3],w),_(h[4],h[4],m),_(h[5],h[5],B),_(h[6],h[6],S),_(h[7],h[7],F)}for(s=0;s<8;s+=1)a[2*s]=h[s].h,a[2*s+1]=h[s].l;return a}function d(e,t){this.h=e,this.l=t}function c(e,t){e.h=t.h,e.l=t.l}function E(e,t,r){e.l=t.l>>>r|t.h<<32-r,e.h=t.h>>>r|t.l<<32-r}function g(e,t,r){e.l=t.h>>>r|t.l<<32-r,e.h=t.l>>>r|t.h<<32-r}function y(e,t,r){e.l=t.l>>>r|t.h<<32-r,e.h=t.h>>>r}function _(e,t,r){var n=(65535&t.l)+(65535&r.l),s=(t.l>>>16)+(r.l>>>16)+(n>>>16),o=(65535&t.h)+(65535&r.h)+(s>>>16),i=(t.h>>>16)+(r.h>>>16)+(o>>>16);e.l=65535&n|s<<16,e.h=65535&o|i<<16}function C(e,t,r,n,s){var o=(65535&t.l)+(65535&r.l)+(65535&n.l)+(65535&s.l),i=(t.l>>>16)+(r.l>>>16)+(n.l>>>16)+(s.l>>>16)+(o>>>16),a=(65535&t.h)+(65535&r.h)+(65535&n.h)+(65535&s.h)+(i>>>16),h=(t.h>>>16)+(r.h>>>16)+(n.h>>>16)+(s.h>>>16)+(a>>>16);e.l=65535&o|i<<16,e.h=65535&a|h<<16}function D(e,t,r,n,s,o){var i=(65535&t.l)+(65535&r.l)+(65535&n.l)+(65535&s.l)+(65535&o.l),a=(t.l>>>16)+(r.l>>>16)+(n.l>>>16)+(s.l>>>16)+(o.l>>>16)+(i>>>16),h=(65535&t.h)+(65535&r.h)+(65535&n.h)+(65535&s.h)+(65535&o.h)+(a>>>16),u=(t.h>>>16)+(r.h>>>16)+(n.h>>>16)+(s.h>>>16)+(o.h>>>16)+(h>>>16);e.l=65535&i|a<<16,e.h=65535&h|u<<16}this.hex=function(e){return h(s(e))},this.b64=function(e){return f(s(e),r)},this.any=function(e,t){return p(s(e),t)},this.raw=function(e){return s(e)},this.hex_hmac=function(e,t){return h(i(e,t))},this.b64_hmac=function(e,t){return f(i(e,t),r)},this.any_hmac=function(e,t,r){return p(i(e,t),r)},this.vm_test=function(){return"900150983cd24fb0d6963f7d28e17f72"===hex("abc").toLowerCase()},this.setUpperCase=function(e){return this},this.setPad=function(e){return r=e||r,this},this.setUTF8=function(e){return"boolean"==typeof e&&(n=e),this}},RMD160:function(e){e&&"boolean"==typeof e.uppercase&&e.uppercase;var t=e&&"string"==typeof e.pad?e.pa:"=",r=!e||"boolean"!=typeof e.utf8||e.utf8,n=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,7,4,13,1,10,6,15,3,12,0,9,5,2,14,11,8,3,10,14,4,9,15,8,1,2,7,0,6,13,11,5,12,1,9,11,10,0,8,12,4,13,3,7,15,14,5,6,2,4,0,5,9,7,12,2,10,14,1,3,8,11,6,15,13],s=[5,14,7,0,9,2,11,4,13,6,15,8,1,10,3,12,6,11,3,7,0,13,5,10,14,15,8,12,4,9,1,2,15,5,1,3,7,14,6,9,11,8,12,2,10,0,4,13,8,6,4,1,3,11,15,0,5,12,2,13,9,7,10,14,12,15,10,4,1,5,8,7,6,2,13,14,0,3,9,11],u=[11,14,15,12,5,8,7,9,11,13,14,15,6,7,9,8,7,6,8,13,11,9,7,15,7,12,15,9,11,7,13,12,11,13,6,7,14,9,13,15,14,8,13,6,5,12,7,5,11,12,14,15,14,15,9,8,9,14,5,6,8,6,5,12,9,15,5,11,6,8,13,12,5,12,13,14,11,8,5,6],d=[8,9,9,11,13,15,15,5,7,7,8,11,14,14,12,6,9,13,15,7,12,8,9,11,7,7,12,7,6,15,13,11,9,7,15,11,8,6,6,14,12,13,5,14,13,13,7,5,15,5,8,11,14,14,6,14,6,9,12,9,12,5,15,8,8,5,12,9,12,5,14,6,8,13,6,5,15,13,11,11];function l(e){return g(y(c(e=r?o(e):e),8*e.length))}function E(e,t){e=r?o(e):e,t=r?o(t):t;var n,s,i=c(e),a=Array(16),h=Array(16);for(i.length>16&&(i=y(i,8*e.length)),n=0;n<16;n+=1)a[n]=909522486^i[n],h[n]=1549556828^i[n];return s=y(a.concat(c(t)),512+8*t.length),g(y(h.concat(s),672))}function g(e){var t,r="",n=32*e.length;for(t=0;t<n;t+=8)r+=String.fromCharCode(e[t>>5]>>>t%32&255);return r}function y(e,t){var r,o,h,c,l,p,f,E,g,y,A,w,m,B,S=1732584193,F=4023233417,v=2562383102,b=271733878,R=3285377520;for(e[t>>5]|=128<<t%32,e[14+(t+64>>>9<<4)]=t,c=e.length,h=0;h<c;h+=16){for(l=y=S,p=A=F,f=w=v,E=m=b,g=B=R,o=0;o<=79;o+=1)r=i(l,_(o,p,f,E)),r=i(r,e[h+n[o]]),r=i(r,C(o)),r=i(a(r,u[o]),g),l=g,g=E,E=a(f,10),f=p,p=r,r=i(y,_(79-o,A,w,m)),r=i(r,e[h+s[o]]),r=i(r,D(o)),r=i(a(r,d[o]),B),y=B,B=m,m=a(w,10),w=A,A=r;r=i(F,i(f,m)),F=i(v,i(E,B)),v=i(b,i(g,y)),b=i(R,i(l,A)),R=i(S,i(p,w)),S=r}return[S,F,v,b,R]}function _(e,t,r,n){return 0<=e&&e<=15?t^r^n:16<=e&&e<=31?t&r|~t&n:32<=e&&e<=47?(t|~r)^n:48<=e&&e<=63?t&n|r&~n:64<=e&&e<=79?t^(r|~n):"rmd160_f: j out of range"}function C(e){return 0<=e&&e<=15?0:16<=e&&e<=31?1518500249:32<=e&&e<=47?1859775393:48<=e&&e<=63?2400959708:64<=e&&e<=79?2840853838:"rmd160_K1: j out of range"}function D(e){return 0<=e&&e<=15?1352829926:16<=e&&e<=31?1548603684:32<=e&&e<=47?1836072691:48<=e&&e<=63?2053994217:64<=e&&e<=79?0:"rmd160_K2: j out of range"}this.hex=function(e){return h(l(e))},this.b64=function(e){return f(l(e),t)},this.any=function(e,t){return p(l(e),t)},this.raw=function(e){return l(e)},this.hex_hmac=function(e,t){return h(E(e,t))},this.b64_hmac=function(e,r){return f(E(e,r),t)},this.any_hmac=function(e,t,r){return p(E(e,t),r)},this.vm_test=function(){return"900150983cd24fb0d6963f7d28e17f72"===hex("abc").toLowerCase()},this.setUpperCase=function(e){return this},this.setPad=function(e){return void 0!==e&&(t=e),this},this.setUTF8=function(e){return"boolean"==typeof e&&(r=e),this}}},t&&"object"==typeof r.g&&r.g&&r.g===r.g.global&&r.g,void 0===(n=function(){return s}.call(t,r,t,e))||(e.exports=n)}()},132:(e,t,r)=>{"use strict";r.r(t),r.d(t,{MockXhr:()=>p,MockXhrServer:()=>f,newMockXhr:()=>E,newServer:()=>g});class n{constructor(e,t,r){this.type=e,this.loaded=void 0!==t?t:0,r>0?(this.total=r,this.lengthComputable=!0):(this.total=0,this.lengthComputable=!1)}}function s(e){return"boolean"==typeof e?e:!!e.capture}class o{constructor(e=this){this._eventContext=e,this._eventListeners={}}hasListeners(){return o.events.some((e=>this._eventListeners[e]||this[`on${e}`]))}addEventListener(e,t,r=!1){if(t){const n={callback:t,useCapture:s(r),once:!!r.once};this._eventListeners[e]=this._eventListeners[e]||[],this._eventListeners[e].some((e=>e.callback===n.callback&&e.useCapture===n.useCapture))||this._eventListeners[e].push(n)}}removeEventListener(e,t,r=!1){if(this._eventListeners[e]){const n=s(r),o=this._eventListeners[e].findIndex((e=>t===e.callback&&n===e.useCapture));o>=0&&this._eventListeners[e].splice(o,1)}}dispatchEvent(e){const t=[];if(this._eventListeners[e.type]&&(t.push(...this._eventListeners[e.type].map((e=>e.callback))),this._eventListeners[e.type]=this._eventListeners[e.type].filter((e=>!e.once))),o.events.includes(e.type)){const r=this[`on${e.type}`];r&&t.push(r)}return t.forEach((t=>{"function"==typeof t?t.call(this._eventContext,e):t.handleEvent()})),!0}}o.events=["loadstart","progress","abort","error","load","timeout","loadend"];class i{constructor(e){this._headers=new Map,e&&e instanceof Object&&Object.keys(e).forEach((t=>{this.addHeader(t,e[t])}))}reset(){this._headers.clear()}getHeader(e){const t=this._headers.get(e.toLowerCase());return void 0!==t?t:null}getAll(){return[...this._headers.keys()].sort(((e,t)=>e.toUpperCase()<t.toUpperCase()?-1:e.toUpperCase()>t.toUpperCase()?1:0)).reduce(((e,t)=>`${e}${t}: ${this._headers.get(t)}\r\n`),"")}getHash(){const e={};return this._headers.forEach(((t,r)=>{e[r]=t})),e}addHeader(e,t){e=e.toLowerCase();const r=this._headers.get(e);r&&(t=`${r}, ${t}`),this._headers.set(e,t)}}function a(e){return r.g.Blob?new r.g.Blob(e).size:Buffer.byteLength(e)}const h=new RegExp(`^(${["Accept-Charset","Accept-Encoding","Access-Control-Request-Headers","Access-Control-Request-Method","Connection","Content-Length","Cookie","Cookie2","Date","DNT","Expect","Host","Keep-Alive","Origin","Referer","TE","Trailer","Transfer-Encoding","Upgrade","Via"].join("|")}|Proxy-.*|Sec-.*)$`,"i"),u=new RegExp(`^(${["DELETE","GET","HEAD","OPTIONS","POST","PUT"].join("|")})$`,"i");function d(e){return u.test(e)&&(e=e.toUpperCase()),e}const c={100:"Continue",101:"Switching Protocols",200:"OK",201:"Created",202:"Accepted",203:"Non-Authoritative Information",204:"No Content",205:"Reset Content",206:"Partial Content",207:"Multi-Status",208:"Already Reported",300:"Multiple Choices",301:"Moved Permanently",302:"Found",303:"See Other",304:"Not Modified",305:"Use Proxy",307:"Temporary Redirect",308:"Permanent Redirect",400:"Bad Request",401:"Unauthorized",402:"Payment Required",403:"Forbidden",404:"Not Found",405:"Method Not Allowed",406:"Not Acceptable",407:"Proxy Authentication Required",408:"Request Timeout",409:"Conflict",410:"Gone",411:"Length Required",412:"Precondition Failed",413:"Payload Too Large",414:"URI Too Long",415:"Unsupported Media Type",416:"Range Not Satisfiable",417:"Expectation Failed",422:"Unprocessable Entity",423:"Locked",424:"Failed Dependency",426:"Upgrade Required",428:"Precondition Required",429:"Too Many Requests",431:"Request Header Fields Too Large",500:"Internal Server Error",501:"Not Implemented",502:"Bad Gateway",503:"Service Unavailable",504:"Gateway Timeout",505:"HTTP Version Not Supported",507:"Insufficient Storage",511:"Network Authentication Required"};function l(e,t=""){const r=new Error(t);throw r.name=e,r}class p extends o{constructor(){super(),this._readyState=p.UNSENT,this.requestHeaders=new i,this._withCredentials=!1,this._timeout=0,this._upload=new o(this),this._response=this._networkErrorResponse(),this.timeoutEnabled=!0,"function"==typeof p.onCreate&&p.onCreate(this)}get readyState(){return this._readyState}set readyState(e){return e}open(e,t,r=!0){if(!r)throw new Error("async = false is not supported.");(function(e){return/^(CONNECT|TRACE|TRACK)$/i.test(e)})(e)&&l("SecurityError",`Method "${e}" forbidden.`),e=d(e),this._terminateRequest(),this._sendFlag=!1,this._uploadListenerFlag=!1,this.method=e,this.url=t,this.requestHeaders.reset(),this._response=this._networkErrorResponse(),this._readyState!==p.OPENED&&(this._readyState=p.OPENED,this._fireReadyStateChange())}setRequestHeader(e,t){if((this._readyState!==p.OPENED||this._sendFlag)&&l("InvalidStateError"),"string"!=typeof e||"string"!=typeof t)throw new SyntaxError;(function(e){return h.test(e)})(e)||(t=t.trim(),this.requestHeaders.addHeader(e,t))}get timeout(){return this._timeout}set timeout(e){this._timeout=e,this._sendFlag&&this.timeoutEnabled&&this.constructor.timeoutEnabled&&this._scheduleRequestTimeout()}get withCredentials(){return this._withCredentials}set withCredentials(e){(this._readyState!==p.UNSENT&&this._readyState!==p.OPENED||this._sendFlag)&&l("InvalidStateError"),this._withCredentials=!!e}get upload(){return this._upload}set upload(e){return e}send(e=null){if((this._readyState!==p.OPENED||this._sendFlag)&&l("InvalidStateError"),"GET"!==this.method&&"HEAD"!==this.method||(e=null),null!==e){let t=null;{let r=null;"string"==typeof e?r="text/plain;charset=UTF-8":e.type&&(r=e.type),t=r}null===this.requestHeaders.getHeader("Content-Type")&&null!==t&&this.requestHeaders.addHeader("Content-Type",t)}if(this._uploadListenerFlag=this._upload.hasListeners(),this.body=e,this._uploadCompleteFlag=null===this.body,this._timedOutFlag=!1,this._sendFlag=!0,this._fireEvent("loadstart",0,0),!this._uploadCompleteFlag&&this._uploadListenerFlag&&this._fireUploadEvent("loadstart",0,this.getRequestBodySize()),this._readyState===p.OPENED&&this._sendFlag){if(this._timeoutReference=Date.now(),this._scheduleRequestTimeout(),"function"==typeof this.onSend){const{onSend:e}=this;setTimeout((()=>e.call(this,this)),0)}if("function"==typeof p.onSend){const{onSend:e}=p;setTimeout((()=>e.call(this,this)),0)}}}abort(){this._terminateRequest(),(this._readyState===p.OPENED&&this._sendFlag||this._readyState===p.HEADERS_RECEIVED||this._readyState===p.LOADING)&&this._requestErrorSteps("abort"),this._readyState===p.DONE&&(this._readyState=p.UNSENT,this._response=this._networkErrorResponse())}get status(){return this._response.status}set status(e){return e}get statusText(){return this._response.statusMessage}set statusText(e){return e}getResponseHeader(e){return this._response.headers.getHeader(e)}getAllResponseHeaders(){return this._response.headers.getAll()}overrideMimeType(){this._readyState!==p.LOADING&&this._readyState!==p.DONE||l("InvalidStateError")}get responseType(){return this._responseType||""}set responseType(e){this._readyState!==p.LOADING&&this._readyState!==p.DONE||l("InvalidStateError"),["","arraybuffer","blob","document","json","text"].includes(e)&&(this._responseType=e)}get response(){if(""===this.responseType||"text"===this.responseType)return this._readyState!==p.LOADING&&this._readyState!==p.DONE||null===this._response.body?"":this._response.body;if(this._readyState!==p.DONE)return null;if("json"===this.responseType){if(null===this._response.body)return null;try{return JSON.parse(this._response.body)}catch(e){return null}}return this._response.body}set response(e){return e}get responseText(){return""!==this.responseType&&"text"!==this.responseType&&l("InvalidStateError"),this._readyState!==p.LOADING&&this._readyState!==p.DONE||null===this._response.body?"":this._response.body}set responseText(e){return e}get responseXML(){return""!==this.responseType&&"document"!==this.responseType&&l("InvalidStateError"),this._readyState!==p.DONE?null:null===this._response.body?"":this._response.body}set responseXML(e){return e}getRequestBodySize(){if(!this._sendFlag)throw new Error("Mock usage error detected.");return(e=this.body)?"string"==typeof e?a(e):r.g.FormData&&e instanceof r.g.FormData||e.constructor&&"FormData"===e.constructor.name?Array.from(e.values()).reduce(((e,t)=>e+(t.size||a(String(t)))),0):e.size||e.byteLength||0:0;var e}uploadProgress(e){if(!this._sendFlag||this._uploadCompleteFlag)throw new Error("Mock usage error detected.");this._uploadListenerFlag&&this._fireUploadEvent("progress",e,this.getRequestBodySize())}respond(e,t,r,n){this.setResponseHeaders(e,t,n),this.setResponseBody(r)}setResponseHeaders(e,t,r){if(this._readyState!==p.OPENED||!this._sendFlag)throw new Error("Mock usage error detected.");this.body&&this._requestEndOfBody(),e="number"==typeof e?e:200;const n=void 0!==r?r:function(e){return c[e]||"Unknown Status"}(e);this._processResponse({status:e,statusMessage:n,headers:new i(t)})}downloadProgress(e,t){if(this._readyState!==p.HEADERS_RECEIVED&&this._readyState!==p.LOADING)throw new Error("Mock usage error detected.");this._readyState===p.HEADERS_RECEIVED&&(this._readyState=p.LOADING),this._fireReadyStateChange(),this._fireEvent("progress",e,t)}setResponseBody(e=null){if(!this._sendFlag||this._readyState!==p.OPENED&&this._readyState!==p.HEADERS_RECEIVED&&this._readyState!==p.LOADING)throw new Error("Mock usage error detected.");this._readyState===p.OPENED&&this.setResponseHeaders(),this._readyState=p.LOADING,this._fireReadyStateChange(),this._response.body=void 0!==e?e:null,this._handleResponseEndOfBody()}setNetworkError(){if(!this._sendFlag)throw new Error("Mock usage error detected.");this._processResponse(this._networkErrorResponse())}setRequestTimeout(){if(!this._sendFlag)throw new Error("Mock usage error detected.");this._terminateRequest(),this._timedOutFlag=!0,this._processResponse(this._networkErrorResponse())}_requestEndOfBody(){if(this._uploadCompleteFlag=!0,this._uploadListenerFlag){const e=this.getRequestBodySize(),t=e;this._fireUploadEvent("progress",t,e),this._fireUploadEvent("load",t,e),this._fireUploadEvent("loadend",t,e)}}_processResponse(e){this._response=e,this._handleResponseErrors(),this._isNetworkErrorResponse()||(this._readyState=p.HEADERS_RECEIVED,this._fireReadyStateChange(),this._readyState===p.HEADERS_RECEIVED&&null===this._response.body&&this._handleResponseEndOfBody())}_handleResponseEndOfBody(){if(this._handleResponseErrors(),this._isNetworkErrorResponse())return;const e=this._response.body?this._response.body.length:0;this._fireEvent("progress",e,e),this._readyState=p.DONE,this._sendFlag=!1,this._fireReadyStateChange(),this._fireEvent("load",e,e),this._fireEvent("loadend",e,e)}_handleResponseErrors(){this._sendFlag&&(this._timedOutFlag?this._requestErrorSteps("timeout"):this._isNetworkErrorResponse()&&this._requestErrorSteps("error"))}_requestErrorSteps(e){this._readyState=p.DONE,this._sendFlag=!1,this._response=this._networkErrorResponse(),this._fireReadyStateChange(),this._uploadCompleteFlag||(this._uploadCompleteFlag=!0,this._uploadListenerFlag&&(this._fireUploadEvent(e,0,0),this._fireUploadEvent("loadend",0,0))),this._fireEvent(e,0,0),this._fireEvent("loadend",0,0)}_networkErrorResponse(){return{type:"error",status:0,statusMessage:"",headers:new i,body:null}}_isNetworkErrorResponse(){return"error"===this._response.type}_terminateRequest(){delete this.method,delete this.url}_newEvent(e,t,r){return new n(e,t,r)}_fireEvent(e,t,r){this.dispatchEvent(this._newEvent(e,t,r))}_fireUploadEvent(e,t,r){this._upload.dispatchEvent(this._newEvent(e,t,r))}_fireReadyStateChange(){const e=new n("readystatechange");this.onreadystatechange&&this.onreadystatechange(e),this.dispatchEvent(e)}_scheduleRequestTimeout(){if(this._timeoutTask&&clearTimeout(this._timeoutTask),this._timeout>0){const e=Math.max(0,this._timeout-(Date.now()-this._timeoutReference));this._timeoutTask=setTimeout((()=>{this._sendFlag&&this.setRequestTimeout(),delete this._timeoutTask}),e)}}}p.timeoutEnabled=!0,p.UNSENT=0,p.OPENED=1,p.HEADERS_RECEIVED=2,p.LOADING=3,p.DONE=4;class f{constructor(e,t={}){this.MockXhr=e,this._requests=[],this._routes={},Object.keys(t).forEach((e=>{const[r,n]=t[e];this.addHandler(e,r,n)})),e.onSend=e=>{this._handleRequest(e)},this.xhrMock=e,this.xhrFactory=()=>new this.MockXhr}install(e=r.g){return this._savedXMLHttpRequest=e.XMLHttpRequest,this._savedContext=e,e.XMLHttpRequest=this.MockXhr,this}remove(){if(!this._savedContext)throw new Error("remove() called without matching install(global).");void 0!==this._savedXMLHttpRequest?(this._savedContext.XMLHttpRequest=this._savedXMLHttpRequest,delete this._savedXMLHttpRequest):delete this._savedContext.XMLHttpRequest,delete this._savedContext}disableTimeout(){this.MockXhr.timeoutEnabled=!1}enableTimeout(){this.MockXhr.timeoutEnabled=!0}get(e,t){return this.addHandler("GET",e,t)}post(e,t){return this.addHandler("POST",e,t)}put(e,t){return this.addHandler("PUT",e,t)}delete(e,t){return this.addHandler("DELETE",e,t)}addHandler(e,t,r){return e=d(e),this._routes[e]||(this._routes[e]=[]),this._routes[e].push({matcher:t,handler:r,count:0}),this}setDefaultHandler(e){return this._defaultRoute={handler:e,count:0},this}setDefault404(){return this.setDefaultHandler({status:404})}getRequestLog(){return this._requests}_handleRequest(e){this._requests.push({method:e.method,url:e.url,headers:e.requestHeaders.getHash(),body:e.body});const t=this._findFirstMatchingRoute(e)||this._defaultRoute;if(t){let{handler:r}=t;Array.isArray(r)&&(r=r[Math.min(r.length-1,t.count)]),t.count+=1,"function"==typeof r?r(e):e.respond(r.status,r.headers,r.body,r.statusText)}}_findFirstMatchingRoute(e){const t=d(e.method);if(!this._routes[t])return;const{url:r}=e;return this._routes[t].find((e=>{const{matcher:t}=e;return"function"==typeof t?t(r):t instanceof RegExp?t.test(r):t===r}))}}function E(){class e extends p{constructor(){super(),"function"==typeof e.onCreate&&e.onCreate(this)}send(...t){if(super.send(...t),"function"==typeof e.onSend){const{onSend:t}=e;setTimeout((()=>t.call(this,this)),0)}}}return e.timeoutEnabled=!0,e}function g(e){return new f(E(),e)}},555:(e,t,r)=>{const n=r(444);var s=new(r(887).SHA256);function o(e){try{JSON.parse(e)}catch(e){return!1}return!0}t.isValidJSONString=o;const i=XMLHttpRequest.prototype.send,a=XMLHttpRequest.prototype.open,h=XMLHttpRequest.prototype.setRequestHeader;function u(e){const t=e.trim().split(/[\r\n]+/),r={};return t.forEach((function(e){const t=e.split(": "),n=t.shift(),s=t.join(": ");"string"==typeof n&&void 0!==n&&(r[n]=s)})),r}function d(e){const t=e.split("?");var r="";const n=t[0];return t.length>1&&(t[1].split("&").forEach((function(e){r+="/"+e.split("=")[0]})),r+="/"),{url:n,paramKeys:r}}function c(e){if(null!=e&&null!=e){let t=Object.keys(e),r="";return t.forEach((e=>r+=e.toLowerCase()+",")),r}return""}t.Send=i,t.Open=a,t.SetRequestHeader=h,t.onRecordStop=function(){let e=sessionStorage.getItem("testName"),t=sessionStorage.getItem("appid");null!=e&&null!=t&&""!=e&&""!=t&&fetch("http://localhost:8081/api/deps",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({app_id:t,test_name:e,deps:JSON.parse(sessionStorage.getItem("depArr")||"")})}).then((e=>console.log(e))),XMLHttpRequest.prototype.send=i,XMLHttpRequest.prototype.open=a,XMLHttpRequest.prototype.setRequestHeader=h,sessionStorage.removeItem("depArr"),sessionStorage.removeItem("testName"),sessionStorage.removeItem("appid"),sessionStorage.removeItem("mode")},t.getResponseHeaders=u,t.getQueryParams=d,t.getRequestHeaders=c,t.ProcessXmlSend=function(e,t,...r){let i=r[0],a=r[1],h=r[2],l=r[3],p="",f="";if(null!=i){const e=d(i);p=e.url,f=e.paramKeys}let E=null!=a?JSON.stringify(Object.keys(n(o(a)?JSON.parse(a):a))):"";"[]"==E&&(E=[]);let g=c(h),y=s.hex(String(l).toUpperCase()+p+f+g+E);if("record"==t){let t=sessionStorage.getItem("depArr"),r=e.response;if(null!=t){let n=JSON.parse(t);n.push({[y]:{status:e.status,headers:u(e.getAllResponseHeaders()),body:r,response_type:e.responseType}}),sessionStorage.setItem("depArr",JSON.stringify(n))}else sessionStorage.setItem("depArr",JSON.stringify([{[y]:{status:e.status,headers:u(e.getAllResponseHeaders()),body:r,response_type:e.responseType}}]))}else if("test"==t){let t=JSON.parse(sessionStorage.getItem("depArr")||"[]"),r={"Content-Type":"application/json"},n='{ "message": "Success!" }',s=200,o=!1;t=t.filter((e=>!(e.hasOwnProperty(y)&&!o&&(s=e[y].status,r=e[y].headers,n=e[y].body,o=!0,1)))),sessionStorage.setItem("depArr",JSON.stringify(t)),e.respond(s,r,n)}}}},t={};function r(n){var s=t[n];if(void 0!==s)return s.exports;var o=t[n]={exports:{}};return e[n](o,o.exports,r),o.exports}r.d=(e,t)=>{for(var n in t)r.o(t,n)&&!r.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},r.g=function(){if("object"==typeof globalThis)return globalThis;try{return this||new Function("return this")()}catch(e){if("object"==typeof window)return window}}(),r.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),r.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},(()=>{const e=r(132).newMockXhr(),{isValidJSONString:t,onRecordStop:n,Send:s,Open:o,SetRequestHeader:i,getResponseHeaders:a,getQueryParams:h,getRequestHeaders:u,ProcessXmlSend:d}=r(555);function c(){XMLHttpRequest.prototype.open=function(...e){return this.requestArr=e,o.apply(this,e)},XMLHttpRequest.prototype.setRequestHeader=function(e,t){i.apply(this,[e,t]),this.headers||(this.headers={}),this.headers[e]||(this.headers[e]=[]),this.headers[e].push(t)},XMLHttpRequest.prototype.send=function(...e){return this.addEventListener("readystatechange",(function(t){let r=!1;this.readyState>=3&&this.status>0&&null!=this.response&&!r&&(d(this,"record",this.requestArr[1],e[0],this.headers,this.requestArr[0]),r=!0)})),s.apply(this,e)}}var l=XMLHttpRequest;!function(){new Map;const t={},r=sessionStorage.getItem("mode");null!=r&&"record"==r?c():null!=r&&"test"==r&&(e.onSend=e=>{d(e,"test",e.url,e.body,e.requestHeaders.getHash(),e.method)},XMLHttpRequest=e),document.addEventListener("eventMode",(function(r){const s=r.detail;"recordingStarted"===s.event?(c(),sessionStorage.setItem("testName",s.testName),sessionStorage.setItem("appid",s.appid),sessionStorage.setItem("mode","record")):"recordingStopped"===s.event?n():"projectLoaded"===s.event?sessionStorage.setItem("appid",s.appid):null==sessionStorage.getItem("mode")&&"playbackStarted"===s.event?(sessionStorage.setItem("testName",s.testName),sessionStorage.setItem("appid",s.appid),sessionStorage.setItem("mode","test"),l=XMLHttpRequest,e.onSend=e=>{d(e,"test",e.url,e.body,e.requestHeaders.getHash(),e.method)},XMLHttpRequest=e):"playbackStopped"===s.event&&(sessionStorage.removeItem("depArr"),sessionStorage.removeItem("testName"),sessionStorage.removeItem("appid"),sessionStorage.removeItem("mode"),XMLHttpRequest=l),t[s.testName]=[s.event,s.appid]}))}()})()})();
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/flat/index.js":
+/*!************************************!*\
+  !*** ./node_modules/flat/index.js ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = flatten
+flatten.flatten = flatten
+flatten.unflatten = unflatten
+
+function isBuffer (obj) {
+  return obj &&
+    obj.constructor &&
+    (typeof obj.constructor.isBuffer === 'function') &&
+    obj.constructor.isBuffer(obj)
+}
+
+function keyIdentity (key) {
+  return key
+}
+
+function flatten (target, opts) {
+  opts = opts || {}
+
+  const delimiter = opts.delimiter || '.'
+  const maxDepth = opts.maxDepth
+  const transformKey = opts.transformKey || keyIdentity
+  const output = {}
+
+  function step (object, prev, currentDepth) {
+    currentDepth = currentDepth || 1
+    Object.keys(object).forEach(function (key) {
+      const value = object[key]
+      const isarray = opts.safe && Array.isArray(value)
+      const type = Object.prototype.toString.call(value)
+      const isbuffer = isBuffer(value)
+      const isobject = (
+        type === '[object Object]' ||
+        type === '[object Array]'
+      )
+
+      const newKey = prev
+        ? prev + delimiter + transformKey(key)
+        : transformKey(key)
+
+      if (!isarray && !isbuffer && isobject && Object.keys(value).length &&
+        (!opts.maxDepth || currentDepth < maxDepth)) {
+        return step(value, newKey, currentDepth + 1)
+      }
+
+      output[newKey] = value
+    })
+  }
+
+  step(target)
+
+  return output
+}
+
+function unflatten (target, opts) {
+  opts = opts || {}
+
+  const delimiter = opts.delimiter || '.'
+  const overwrite = opts.overwrite || false
+  const transformKey = opts.transformKey || keyIdentity
+  const result = {}
+
+  const isbuffer = isBuffer(target)
+  if (isbuffer || Object.prototype.toString.call(target) !== '[object Object]') {
+    return target
+  }
+
+  // safely ensure that the key is
+  // an integer.
+  function getkey (key) {
+    const parsedKey = Number(key)
+
+    return (
+      isNaN(parsedKey) ||
+      key.indexOf('.') !== -1 ||
+      opts.object
+    ) ? key
+      : parsedKey
+  }
+
+  function addKeys (keyPrefix, recipient, target) {
+    return Object.keys(target).reduce(function (result, key) {
+      result[keyPrefix + delimiter + key] = target[key]
+
+      return result
+    }, recipient)
+  }
+
+  function isEmpty (val) {
+    const type = Object.prototype.toString.call(val)
+    const isArray = type === '[object Array]'
+    const isObject = type === '[object Object]'
+
+    if (!val) {
+      return true
+    } else if (isArray) {
+      return !val.length
+    } else if (isObject) {
+      return !Object.keys(val).length
+    }
+  }
+
+  target = Object.keys(target).reduce(function (result, key) {
+    const type = Object.prototype.toString.call(target[key])
+    const isObject = (type === '[object Object]' || type === '[object Array]')
+    if (!isObject || isEmpty(target[key])) {
+      result[key] = target[key]
+      return result
+    } else {
+      return addKeys(
+        key,
+        result,
+        flatten(target[key], opts)
+      )
+    }
+  }, {})
+
+  Object.keys(target).forEach(function (key) {
+    const split = key.split(delimiter).map(transformKey)
+    let key1 = getkey(split.shift())
+    let key2 = getkey(split[0])
+    let recipient = result
+
+    while (key2 !== undefined) {
+      if (key1 === '__proto__') {
+        return
+      }
+
+      const type = Object.prototype.toString.call(recipient[key1])
+      const isobject = (
+        type === '[object Object]' ||
+        type === '[object Array]'
+      )
+
+      // do not write over falsey, non-undefined values if overwrite is false
+      if (!overwrite && !isobject && typeof recipient[key1] !== 'undefined') {
+        return
+      }
+
+      if ((overwrite && !isobject) || (!overwrite && recipient[key1] == null)) {
+        recipient[key1] = (
+          typeof key2 === 'number' &&
+          !opts.object ? [] : {}
+        )
+      }
+
+      recipient = recipient[key1]
+      if (split.length > 0) {
+        key1 = getkey(split.shift())
+        key2 = getkey(split[0])
+      }
+    }
+
+    // unflatten again for 'messy objects'
+    recipient[key1] = unflatten(target[key], opts)
+  })
+
+  return result
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/jshashes/hashes.js":
+/*!*****************************************!*\
+  !*** ./node_modules/jshashes/hashes.js ***!
+  \*****************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/**
+ * jshashes - https://github.com/h2non/jshashes
+ * Released under the "New BSD" license
+ *
+ * Algorithms specification:
+ *
+ * MD5 - http://www.ietf.org/rfc/rfc1321.txt
+ * RIPEMD-160 - http://homes.esat.kuleuven.be/~bosselae/ripemd160.html
+ * SHA1   - http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
+ * SHA256 - http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
+ * SHA512 - http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
+ * HMAC - http://www.ietf.org/rfc/rfc2104.txt
+ */
+(function() {
+  var Hashes;
+
+  function utf8Encode(str) {
+    var x, y, output = '',
+      i = -1,
+      l;
+
+    if (str && str.length) {
+      l = str.length;
+      while ((i += 1) < l) {
+        /* Decode utf-16 surrogate pairs */
+        x = str.charCodeAt(i);
+        y = i + 1 < l ? str.charCodeAt(i + 1) : 0;
+        if (0xD800 <= x && x <= 0xDBFF && 0xDC00 <= y && y <= 0xDFFF) {
+          x = 0x10000 + ((x & 0x03FF) << 10) + (y & 0x03FF);
+          i += 1;
+        }
+        /* Encode output as utf-8 */
+        if (x <= 0x7F) {
+          output += String.fromCharCode(x);
+        } else if (x <= 0x7FF) {
+          output += String.fromCharCode(0xC0 | ((x >>> 6) & 0x1F),
+            0x80 | (x & 0x3F));
+        } else if (x <= 0xFFFF) {
+          output += String.fromCharCode(0xE0 | ((x >>> 12) & 0x0F),
+            0x80 | ((x >>> 6) & 0x3F),
+            0x80 | (x & 0x3F));
+        } else if (x <= 0x1FFFFF) {
+          output += String.fromCharCode(0xF0 | ((x >>> 18) & 0x07),
+            0x80 | ((x >>> 12) & 0x3F),
+            0x80 | ((x >>> 6) & 0x3F),
+            0x80 | (x & 0x3F));
+        }
+      }
+    }
+    return output;
+  }
+
+  function utf8Decode(str) {
+    var i, ac, c1, c2, c3, arr = [],
+      l;
+    i = ac = c1 = c2 = c3 = 0;
+
+    if (str && str.length) {
+      l = str.length;
+      str += '';
+
+      while (i < l) {
+        c1 = str.charCodeAt(i);
+        ac += 1;
+        if (c1 < 128) {
+          arr[ac] = String.fromCharCode(c1);
+          i += 1;
+        } else if (c1 > 191 && c1 < 224) {
+          c2 = str.charCodeAt(i + 1);
+          arr[ac] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
+          i += 2;
+        } else {
+          c2 = str.charCodeAt(i + 1);
+          c3 = str.charCodeAt(i + 2);
+          arr[ac] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+          i += 3;
+        }
+      }
+    }
+    return arr.join('');
+  }
+
+  /**
+   * Add integers, wrapping at 2^32. This uses 16-bit operations internally
+   * to work around bugs in some JS interpreters.
+   */
+
+  function safe_add(x, y) {
+    var lsw = (x & 0xFFFF) + (y & 0xFFFF),
+      msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    return (msw << 16) | (lsw & 0xFFFF);
+  }
+
+  /**
+   * Bitwise rotate a 32-bit number to the left.
+   */
+
+  function bit_rol(num, cnt) {
+    return (num << cnt) | (num >>> (32 - cnt));
+  }
+
+  /**
+   * Convert a raw string to a hex string
+   */
+
+  function rstr2hex(input, hexcase) {
+    var hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef',
+      output = '',
+      x, i = 0,
+      l = input.length;
+    for (; i < l; i += 1) {
+      x = input.charCodeAt(i);
+      output += hex_tab.charAt((x >>> 4) & 0x0F) + hex_tab.charAt(x & 0x0F);
+    }
+    return output;
+  }
+
+  /**
+   * Encode a string as utf-16
+   */
+
+  function str2rstr_utf16le(input) {
+    var i, l = input.length,
+      output = '';
+    for (i = 0; i < l; i += 1) {
+      output += String.fromCharCode(input.charCodeAt(i) & 0xFF, (input.charCodeAt(i) >>> 8) & 0xFF);
+    }
+    return output;
+  }
+
+  function str2rstr_utf16be(input) {
+    var i, l = input.length,
+      output = '';
+    for (i = 0; i < l; i += 1) {
+      output += String.fromCharCode((input.charCodeAt(i) >>> 8) & 0xFF, input.charCodeAt(i) & 0xFF);
+    }
+    return output;
+  }
+
+  /**
+   * Convert an array of big-endian words to a string
+   */
+
+  function binb2rstr(input) {
+    var i, l = input.length * 32,
+      output = '';
+    for (i = 0; i < l; i += 8) {
+      output += String.fromCharCode((input[i >> 5] >>> (24 - i % 32)) & 0xFF);
+    }
+    return output;
+  }
+
+  /**
+   * Convert an array of little-endian words to a string
+   */
+
+  function binl2rstr(input) {
+    var i, l = input.length * 32,
+      output = '';
+    for (i = 0; i < l; i += 8) {
+      output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
+    }
+    return output;
+  }
+
+  /**
+   * Convert a raw string to an array of little-endian words
+   * Characters >255 have their high-byte silently ignored.
+   */
+
+  function rstr2binl(input) {
+    var i, l = input.length * 8,
+      output = Array(input.length >> 2),
+      lo = output.length;
+    for (i = 0; i < lo; i += 1) {
+      output[i] = 0;
+    }
+    for (i = 0; i < l; i += 8) {
+      output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (i % 32);
+    }
+    return output;
+  }
+
+  /**
+   * Convert a raw string to an array of big-endian words
+   * Characters >255 have their high-byte silently ignored.
+   */
+
+  function rstr2binb(input) {
+    var i, l = input.length * 8,
+      output = Array(input.length >> 2),
+      lo = output.length;
+    for (i = 0; i < lo; i += 1) {
+      output[i] = 0;
+    }
+    for (i = 0; i < l; i += 8) {
+      output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (24 - i % 32);
+    }
+    return output;
+  }
+
+  /**
+   * Convert a raw string to an arbitrary string encoding
+   */
+
+  function rstr2any(input, encoding) {
+    var divisor = encoding.length,
+      remainders = Array(),
+      i, q, x, ld, quotient, dividend, output, full_length;
+
+    /* Convert to an array of 16-bit big-endian values, forming the dividend */
+    dividend = Array(Math.ceil(input.length / 2));
+    ld = dividend.length;
+    for (i = 0; i < ld; i += 1) {
+      dividend[i] = (input.charCodeAt(i * 2) << 8) | input.charCodeAt(i * 2 + 1);
+    }
+
+    /**
+     * Repeatedly perform a long division. The binary array forms the dividend,
+     * the length of the encoding is the divisor. Once computed, the quotient
+     * forms the dividend for the next step. We stop when the dividend is zerHashes.
+     * All remainders are stored for later use.
+     */
+    while (dividend.length > 0) {
+      quotient = Array();
+      x = 0;
+      for (i = 0; i < dividend.length; i += 1) {
+        x = (x << 16) + dividend[i];
+        q = Math.floor(x / divisor);
+        x -= q * divisor;
+        if (quotient.length > 0 || q > 0) {
+          quotient[quotient.length] = q;
+        }
+      }
+      remainders[remainders.length] = x;
+      dividend = quotient;
+    }
+
+    /* Convert the remainders to the output string */
+    output = '';
+    for (i = remainders.length - 1; i >= 0; i--) {
+      output += encoding.charAt(remainders[i]);
+    }
+
+    /* Append leading zero equivalents */
+    full_length = Math.ceil(input.length * 8 / (Math.log(encoding.length) / Math.log(2)));
+    for (i = output.length; i < full_length; i += 1) {
+      output = encoding[0] + output;
+    }
+    return output;
+  }
+
+  /**
+   * Convert a raw string to a base-64 string
+   */
+
+  function rstr2b64(input, b64pad) {
+    var tab = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+      output = '',
+      len = input.length,
+      i, j, triplet;
+    b64pad = b64pad || '=';
+    for (i = 0; i < len; i += 3) {
+      triplet = (input.charCodeAt(i) << 16) | (i + 1 < len ? input.charCodeAt(i + 1) << 8 : 0) | (i + 2 < len ? input.charCodeAt(i + 2) : 0);
+      for (j = 0; j < 4; j += 1) {
+        if (i * 8 + j * 6 > input.length * 8) {
+          output += b64pad;
+        } else {
+          output += tab.charAt((triplet >>> 6 * (3 - j)) & 0x3F);
+        }
+      }
+    }
+    return output;
+  }
+
+  Hashes = {
+    /**
+     * @property {String} version
+     * @readonly
+     */
+    VERSION: '1.0.6',
+    /**
+     * @member Hashes
+     * @class Base64
+     * @constructor
+     */
+    Base64: function() {
+      // private properties
+      var tab = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+        pad = '=', // default pad according with the RFC standard
+        url = false, // URL encoding support @todo
+        utf8 = true; // by default enable UTF-8 support encoding
+
+      // public method for encoding
+      this.encode = function(input) {
+        var i, j, triplet,
+          output = '',
+          len = input.length;
+
+        pad = pad || '=';
+        input = (utf8) ? utf8Encode(input) : input;
+
+        for (i = 0; i < len; i += 3) {
+          triplet = (input.charCodeAt(i) << 16) | (i + 1 < len ? input.charCodeAt(i + 1) << 8 : 0) | (i + 2 < len ? input.charCodeAt(i + 2) : 0);
+          for (j = 0; j < 4; j += 1) {
+            if (i * 8 + j * 6 > len * 8) {
+              output += pad;
+            } else {
+              output += tab.charAt((triplet >>> 6 * (3 - j)) & 0x3F);
+            }
+          }
+        }
+        return output;
+      };
+
+      // public method for decoding
+      this.decode = function(input) {
+        // var b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+        var i, o1, o2, o3, h1, h2, h3, h4, bits, ac,
+          dec = '',
+          arr = [];
+        if (!input) {
+          return input;
+        }
+
+        i = ac = 0;
+        input = input.replace(new RegExp('\\' + pad, 'gi'), ''); // use '='
+        //input += '';
+
+        do { // unpack four hexets into three octets using index points in b64
+          h1 = tab.indexOf(input.charAt(i += 1));
+          h2 = tab.indexOf(input.charAt(i += 1));
+          h3 = tab.indexOf(input.charAt(i += 1));
+          h4 = tab.indexOf(input.charAt(i += 1));
+
+          bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
+
+          o1 = bits >> 16 & 0xff;
+          o2 = bits >> 8 & 0xff;
+          o3 = bits & 0xff;
+          ac += 1;
+
+          if (h3 === 64) {
+            arr[ac] = String.fromCharCode(o1);
+          } else if (h4 === 64) {
+            arr[ac] = String.fromCharCode(o1, o2);
+          } else {
+            arr[ac] = String.fromCharCode(o1, o2, o3);
+          }
+        } while (i < input.length);
+
+        dec = arr.join('');
+        dec = (utf8) ? utf8Decode(dec) : dec;
+
+        return dec;
+      };
+
+      // set custom pad string
+      this.setPad = function(str) {
+        pad = str || pad;
+        return this;
+      };
+      // set custom tab string characters
+      this.setTab = function(str) {
+        tab = str || tab;
+        return this;
+      };
+      this.setUTF8 = function(bool) {
+        if (typeof bool === 'boolean') {
+          utf8 = bool;
+        }
+        return this;
+      };
+    },
+
+    /**
+     * CRC-32 calculation
+     * @member Hashes
+     * @method CRC32
+     * @static
+     * @param {String} str Input String
+     * @return {String}
+     */
+    CRC32: function(str) {
+      var crc = 0,
+        x = 0,
+        y = 0,
+        table, i, iTop;
+      str = utf8Encode(str);
+
+      table = [
+        '00000000 77073096 EE0E612C 990951BA 076DC419 706AF48F E963A535 9E6495A3 0EDB8832 ',
+        '79DCB8A4 E0D5E91E 97D2D988 09B64C2B 7EB17CBD E7B82D07 90BF1D91 1DB71064 6AB020F2 F3B97148 ',
+        '84BE41DE 1ADAD47D 6DDDE4EB F4D4B551 83D385C7 136C9856 646BA8C0 FD62F97A 8A65C9EC 14015C4F ',
+        '63066CD9 FA0F3D63 8D080DF5 3B6E20C8 4C69105E D56041E4 A2677172 3C03E4D1 4B04D447 D20D85FD ',
+        'A50AB56B 35B5A8FA 42B2986C DBBBC9D6 ACBCF940 32D86CE3 45DF5C75 DCD60DCF ABD13D59 26D930AC ',
+        '51DE003A C8D75180 BFD06116 21B4F4B5 56B3C423 CFBA9599 B8BDA50F 2802B89E 5F058808 C60CD9B2 ',
+        'B10BE924 2F6F7C87 58684C11 C1611DAB B6662D3D 76DC4190 01DB7106 98D220BC EFD5102A 71B18589 ',
+        '06B6B51F 9FBFE4A5 E8B8D433 7807C9A2 0F00F934 9609A88E E10E9818 7F6A0DBB 086D3D2D 91646C97 ',
+        'E6635C01 6B6B51F4 1C6C6162 856530D8 F262004E 6C0695ED 1B01A57B 8208F4C1 F50FC457 65B0D9C6 ',
+        '12B7E950 8BBEB8EA FCB9887C 62DD1DDF 15DA2D49 8CD37CF3 FBD44C65 4DB26158 3AB551CE A3BC0074 ',
+        'D4BB30E2 4ADFA541 3DD895D7 A4D1C46D D3D6F4FB 4369E96A 346ED9FC AD678846 DA60B8D0 44042D73 ',
+        '33031DE5 AA0A4C5F DD0D7CC9 5005713C 270241AA BE0B1010 C90C2086 5768B525 206F85B3 B966D409 ',
+        'CE61E49F 5EDEF90E 29D9C998 B0D09822 C7D7A8B4 59B33D17 2EB40D81 B7BD5C3B C0BA6CAD EDB88320 ',
+        '9ABFB3B6 03B6E20C 74B1D29A EAD54739 9DD277AF 04DB2615 73DC1683 E3630B12 94643B84 0D6D6A3E ',
+        '7A6A5AA8 E40ECF0B 9309FF9D 0A00AE27 7D079EB1 F00F9344 8708A3D2 1E01F268 6906C2FE F762575D ',
+        '806567CB 196C3671 6E6B06E7 FED41B76 89D32BE0 10DA7A5A 67DD4ACC F9B9DF6F 8EBEEFF9 17B7BE43 ',
+        '60B08ED5 D6D6A3E8 A1D1937E 38D8C2C4 4FDFF252 D1BB67F1 A6BC5767 3FB506DD 48B2364B D80D2BDA ',
+        'AF0A1B4C 36034AF6 41047A60 DF60EFC3 A867DF55 316E8EEF 4669BE79 CB61B38C BC66831A 256FD2A0 ',
+        '5268E236 CC0C7795 BB0B4703 220216B9 5505262F C5BA3BBE B2BD0B28 2BB45A92 5CB36A04 C2D7FFA7 ',
+        'B5D0CF31 2CD99E8B 5BDEAE1D 9B64C2B0 EC63F226 756AA39C 026D930A 9C0906A9 EB0E363F 72076785 ',
+        '05005713 95BF4A82 E2B87A14 7BB12BAE 0CB61B38 92D28E9B E5D5BE0D 7CDCEFB7 0BDBDF21 86D3D2D4 ',
+        'F1D4E242 68DDB3F8 1FDA836E 81BE16CD F6B9265B 6FB077E1 18B74777 88085AE6 FF0F6A70 66063BCA ',
+        '11010B5C 8F659EFF F862AE69 616BFFD3 166CCF45 A00AE278 D70DD2EE 4E048354 3903B3C2 A7672661 ',
+        'D06016F7 4969474D 3E6E77DB AED16A4A D9D65ADC 40DF0B66 37D83BF0 A9BCAE53 DEBB9EC5 47B2CF7F ',
+        '30B5FFE9 BDBDF21C CABAC28A 53B39330 24B4A3A6 BAD03605 CDD70693 54DE5729 23D967BF B3667A2E ',
+        'C4614AB8 5D681B02 2A6F2B94 B40BBE37 C30C8EA1 5A05DF1B 2D02EF8D'
+      ].join('');
+
+      crc = crc ^ (-1);
+      for (i = 0, iTop = str.length; i < iTop; i += 1) {
+        y = (crc ^ str.charCodeAt(i)) & 0xFF;
+        x = '0x' + table.substr(y * 9, 8);
+        crc = (crc >>> 8) ^ x;
+      }
+      // always return a positive number (that's what >>> 0 does)
+      return (crc ^ (-1)) >>> 0;
+    },
+    /**
+     * @member Hashes
+     * @class MD5
+     * @constructor
+     * @param {Object} [config]
+     *
+     * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
+     * Digest Algorithm, as defined in RFC 1321.
+     * Version 2.2 Copyright (C) Paul Johnston 1999 - 2009
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * See <http://pajhome.org.uk/crypt/md5> for more infHashes.
+     */
+    MD5: function(options) {
+      /**
+       * Private config properties. You may need to tweak these to be compatible with
+       * the server-side, but the defaults work in most cases.
+       * See {@link Hashes.MD5#method-setUpperCase} and {@link Hashes.SHA1#method-setUpperCase}
+       */
+      var hexcase = (options && typeof options.uppercase === 'boolean') ? options.uppercase : false, // hexadecimal output case format. false - lowercase; true - uppercase
+        b64pad = (options && typeof options.pad === 'string') ? options.pad : '=', // base-64 pad character. Defaults to '=' for strict RFC compliance
+        utf8 = (options && typeof options.utf8 === 'boolean') ? options.utf8 : true; // enable/disable utf8 encoding
+
+      // privileged (public) methods
+      this.hex = function(s) {
+        return rstr2hex(rstr(s, utf8), hexcase);
+      };
+      this.b64 = function(s) {
+        return rstr2b64(rstr(s), b64pad);
+      };
+      this.any = function(s, e) {
+        return rstr2any(rstr(s, utf8), e);
+      };
+      this.raw = function(s) {
+        return rstr(s, utf8);
+      };
+      this.hex_hmac = function(k, d) {
+        return rstr2hex(rstr_hmac(k, d), hexcase);
+      };
+      this.b64_hmac = function(k, d) {
+        return rstr2b64(rstr_hmac(k, d), b64pad);
+      };
+      this.any_hmac = function(k, d, e) {
+        return rstr2any(rstr_hmac(k, d), e);
+      };
+      /**
+       * Perform a simple self-test to see if the VM is working
+       * @return {String} Hexadecimal hash sample
+       */
+      this.vm_test = function() {
+        return hex('abc').toLowerCase() === '900150983cd24fb0d6963f7d28e17f72';
+      };
+      /**
+       * Enable/disable uppercase hexadecimal returned string
+       * @param {Boolean}
+       * @return {Object} this
+       */
+      this.setUpperCase = function(a) {
+        if (typeof a === 'boolean') {
+          hexcase = a;
+        }
+        return this;
+      };
+      /**
+       * Defines a base64 pad string
+       * @param {String} Pad
+       * @return {Object} this
+       */
+      this.setPad = function(a) {
+        b64pad = a || b64pad;
+        return this;
+      };
+      /**
+       * Defines a base64 pad string
+       * @param {Boolean}
+       * @return {Object} [this]
+       */
+      this.setUTF8 = function(a) {
+        if (typeof a === 'boolean') {
+          utf8 = a;
+        }
+        return this;
+      };
+
+      // private methods
+
+      /**
+       * Calculate the MD5 of a raw string
+       */
+
+      function rstr(s) {
+        s = (utf8) ? utf8Encode(s) : s;
+        return binl2rstr(binl(rstr2binl(s), s.length * 8));
+      }
+
+      /**
+       * Calculate the HMAC-MD5, of a key and some data (raw strings)
+       */
+
+      function rstr_hmac(key, data) {
+        var bkey, ipad, opad, hash, i;
+
+        key = (utf8) ? utf8Encode(key) : key;
+        data = (utf8) ? utf8Encode(data) : data;
+        bkey = rstr2binl(key);
+        if (bkey.length > 16) {
+          bkey = binl(bkey, key.length * 8);
+        }
+
+        ipad = Array(16), opad = Array(16);
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+        hash = binl(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binl(opad.concat(hash), 512 + 128));
+      }
+
+      /**
+       * Calculate the MD5 of an array of little-endian words, and a bit length.
+       */
+
+      function binl(x, len) {
+        var i, olda, oldb, oldc, oldd,
+          a = 1732584193,
+          b = -271733879,
+          c = -1732584194,
+          d = 271733878;
+
+        /* append padding */
+        x[len >> 5] |= 0x80 << ((len) % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+
+        for (i = 0; i < x.length; i += 16) {
+          olda = a;
+          oldb = b;
+          oldc = c;
+          oldd = d;
+
+          a = md5_ff(a, b, c, d, x[i + 0], 7, -680876936);
+          d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
+          c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
+          b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
+          a = md5_ff(a, b, c, d, x[i + 4], 7, -176418897);
+          d = md5_ff(d, a, b, c, x[i + 5], 12, 1200080426);
+          c = md5_ff(c, d, a, b, x[i + 6], 17, -1473231341);
+          b = md5_ff(b, c, d, a, x[i + 7], 22, -45705983);
+          a = md5_ff(a, b, c, d, x[i + 8], 7, 1770035416);
+          d = md5_ff(d, a, b, c, x[i + 9], 12, -1958414417);
+          c = md5_ff(c, d, a, b, x[i + 10], 17, -42063);
+          b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
+          a = md5_ff(a, b, c, d, x[i + 12], 7, 1804603682);
+          d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
+          c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
+          b = md5_ff(b, c, d, a, x[i + 15], 22, 1236535329);
+
+          a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
+          d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
+          c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
+          b = md5_gg(b, c, d, a, x[i + 0], 20, -373897302);
+          a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
+          d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
+          c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
+          b = md5_gg(b, c, d, a, x[i + 4], 20, -405537848);
+          a = md5_gg(a, b, c, d, x[i + 9], 5, 568446438);
+          d = md5_gg(d, a, b, c, x[i + 14], 9, -1019803690);
+          c = md5_gg(c, d, a, b, x[i + 3], 14, -187363961);
+          b = md5_gg(b, c, d, a, x[i + 8], 20, 1163531501);
+          a = md5_gg(a, b, c, d, x[i + 13], 5, -1444681467);
+          d = md5_gg(d, a, b, c, x[i + 2], 9, -51403784);
+          c = md5_gg(c, d, a, b, x[i + 7], 14, 1735328473);
+          b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
+
+          a = md5_hh(a, b, c, d, x[i + 5], 4, -378558);
+          d = md5_hh(d, a, b, c, x[i + 8], 11, -2022574463);
+          c = md5_hh(c, d, a, b, x[i + 11], 16, 1839030562);
+          b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
+          a = md5_hh(a, b, c, d, x[i + 1], 4, -1530992060);
+          d = md5_hh(d, a, b, c, x[i + 4], 11, 1272893353);
+          c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
+          b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
+          a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
+          d = md5_hh(d, a, b, c, x[i + 0], 11, -358537222);
+          c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
+          b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
+          a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
+          d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
+          c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
+          b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
+
+          a = md5_ii(a, b, c, d, x[i + 0], 6, -198630844);
+          d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
+          c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
+          b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
+          a = md5_ii(a, b, c, d, x[i + 12], 6, 1700485571);
+          d = md5_ii(d, a, b, c, x[i + 3], 10, -1894986606);
+          c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
+          b = md5_ii(b, c, d, a, x[i + 1], 21, -2054922799);
+          a = md5_ii(a, b, c, d, x[i + 8], 6, 1873313359);
+          d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
+          c = md5_ii(c, d, a, b, x[i + 6], 15, -1560198380);
+          b = md5_ii(b, c, d, a, x[i + 13], 21, 1309151649);
+          a = md5_ii(a, b, c, d, x[i + 4], 6, -145523070);
+          d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
+          c = md5_ii(c, d, a, b, x[i + 2], 15, 718787259);
+          b = md5_ii(b, c, d, a, x[i + 9], 21, -343485551);
+
+          a = safe_add(a, olda);
+          b = safe_add(b, oldb);
+          c = safe_add(c, oldc);
+          d = safe_add(d, oldd);
+        }
+        return Array(a, b, c, d);
+      }
+
+      /**
+       * These functions implement the four basic operations the algorithm uses.
+       */
+
+      function md5_cmn(q, a, b, x, s, t) {
+        return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b);
+      }
+
+      function md5_ff(a, b, c, d, x, s, t) {
+        return md5_cmn((b & c) | ((~b) & d), a, b, x, s, t);
+      }
+
+      function md5_gg(a, b, c, d, x, s, t) {
+        return md5_cmn((b & d) | (c & (~d)), a, b, x, s, t);
+      }
+
+      function md5_hh(a, b, c, d, x, s, t) {
+        return md5_cmn(b ^ c ^ d, a, b, x, s, t);
+      }
+
+      function md5_ii(a, b, c, d, x, s, t) {
+        return md5_cmn(c ^ (b | (~d)), a, b, x, s, t);
+      }
+    },
+    /**
+     * @member Hashes
+     * @class Hashes.SHA1
+     * @param {Object} [config]
+     * @constructor
+     *
+     * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined in FIPS 180-1
+     * Version 2.2 Copyright Paul Johnston 2000 - 2009.
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * See http://pajhome.org.uk/crypt/md5 for details.
+     */
+    SHA1: function(options) {
+      /**
+       * Private config properties. You may need to tweak these to be compatible with
+       * the server-side, but the defaults work in most cases.
+       * See {@link Hashes.MD5#method-setUpperCase} and {@link Hashes.SHA1#method-setUpperCase}
+       */
+      var hexcase = (options && typeof options.uppercase === 'boolean') ? options.uppercase : false, // hexadecimal output case format. false - lowercase; true - uppercase
+        b64pad = (options && typeof options.pad === 'string') ? options.pad : '=', // base-64 pad character. Defaults to '=' for strict RFC compliance
+        utf8 = (options && typeof options.utf8 === 'boolean') ? options.utf8 : true; // enable/disable utf8 encoding
+
+      // public methods
+      this.hex = function(s) {
+        return rstr2hex(rstr(s, utf8), hexcase);
+      };
+      this.b64 = function(s) {
+        return rstr2b64(rstr(s, utf8), b64pad);
+      };
+      this.any = function(s, e) {
+        return rstr2any(rstr(s, utf8), e);
+      };
+      this.raw = function(s) {
+        return rstr(s, utf8);
+      };
+      this.hex_hmac = function(k, d) {
+        return rstr2hex(rstr_hmac(k, d));
+      };
+      this.b64_hmac = function(k, d) {
+        return rstr2b64(rstr_hmac(k, d), b64pad);
+      };
+      this.any_hmac = function(k, d, e) {
+        return rstr2any(rstr_hmac(k, d), e);
+      };
+      /**
+       * Perform a simple self-test to see if the VM is working
+       * @return {String} Hexadecimal hash sample
+       * @public
+       */
+      this.vm_test = function() {
+        return hex('abc').toLowerCase() === '900150983cd24fb0d6963f7d28e17f72';
+      };
+      /**
+       * @description Enable/disable uppercase hexadecimal returned string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUpperCase = function(a) {
+        if (typeof a === 'boolean') {
+          hexcase = a;
+        }
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {string} Pad
+       * @return {Object} this
+       * @public
+       */
+      this.setPad = function(a) {
+        b64pad = a || b64pad;
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUTF8 = function(a) {
+        if (typeof a === 'boolean') {
+          utf8 = a;
+        }
+        return this;
+      };
+
+      // private methods
+
+      /**
+       * Calculate the SHA-512 of a raw string
+       */
+
+      function rstr(s) {
+        s = (utf8) ? utf8Encode(s) : s;
+        return binb2rstr(binb(rstr2binb(s), s.length * 8));
+      }
+
+      /**
+       * Calculate the HMAC-SHA1 of a key and some data (raw strings)
+       */
+
+      function rstr_hmac(key, data) {
+        var bkey, ipad, opad, i, hash;
+        key = (utf8) ? utf8Encode(key) : key;
+        data = (utf8) ? utf8Encode(data) : data;
+        bkey = rstr2binb(key);
+
+        if (bkey.length > 16) {
+          bkey = binb(bkey, key.length * 8);
+        }
+        ipad = Array(16), opad = Array(16);
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+        hash = binb(ipad.concat(rstr2binb(data)), 512 + data.length * 8);
+        return binb2rstr(binb(opad.concat(hash), 512 + 160));
+      }
+
+      /**
+       * Calculate the SHA-1 of an array of big-endian words, and a bit length
+       */
+
+      function binb(x, len) {
+        var i, j, t, olda, oldb, oldc, oldd, olde,
+          w = Array(80),
+          a = 1732584193,
+          b = -271733879,
+          c = -1732584194,
+          d = 271733878,
+          e = -1009589776;
+
+        /* append padding */
+        x[len >> 5] |= 0x80 << (24 - len % 32);
+        x[((len + 64 >> 9) << 4) + 15] = len;
+
+        for (i = 0; i < x.length; i += 16) {
+          olda = a;
+          oldb = b;
+          oldc = c;
+          oldd = d;
+          olde = e;
+
+          for (j = 0; j < 80; j += 1) {
+            if (j < 16) {
+              w[j] = x[i + j];
+            } else {
+              w[j] = bit_rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
+            }
+            t = safe_add(safe_add(bit_rol(a, 5), sha1_ft(j, b, c, d)),
+              safe_add(safe_add(e, w[j]), sha1_kt(j)));
+            e = d;
+            d = c;
+            c = bit_rol(b, 30);
+            b = a;
+            a = t;
+          }
+
+          a = safe_add(a, olda);
+          b = safe_add(b, oldb);
+          c = safe_add(c, oldc);
+          d = safe_add(d, oldd);
+          e = safe_add(e, olde);
+        }
+        return Array(a, b, c, d, e);
+      }
+
+      /**
+       * Perform the appropriate triplet combination function for the current
+       * iteration
+       */
+
+      function sha1_ft(t, b, c, d) {
+        if (t < 20) {
+          return (b & c) | ((~b) & d);
+        }
+        if (t < 40) {
+          return b ^ c ^ d;
+        }
+        if (t < 60) {
+          return (b & c) | (b & d) | (c & d);
+        }
+        return b ^ c ^ d;
+      }
+
+      /**
+       * Determine the appropriate additive constant for the current iteration
+       */
+
+      function sha1_kt(t) {
+        return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 :
+          (t < 60) ? -1894007588 : -899497514;
+      }
+    },
+    /**
+     * @class Hashes.SHA256
+     * @param {config}
+     *
+     * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined in FIPS 180-2
+     * Version 2.2 Copyright Angel Marin, Paul Johnston 2000 - 2009.
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * See http://pajhome.org.uk/crypt/md5 for details.
+     * Also http://anmar.eu.org/projects/jssha2/
+     */
+    SHA256: function(options) {
+      /**
+       * Private properties configuration variables. You may need to tweak these to be compatible with
+       * the server-side, but the defaults work in most cases.
+       * @see this.setUpperCase() method
+       * @see this.setPad() method
+       */
+      var hexcase = (options && typeof options.uppercase === 'boolean') ? options.uppercase : false, // hexadecimal output case format. false - lowercase; true - uppercase  */
+        b64pad = (options && typeof options.pad === 'string') ? options.pad : '=',
+        /* base-64 pad character. Default '=' for strict RFC compliance   */
+        utf8 = (options && typeof options.utf8 === 'boolean') ? options.utf8 : true,
+        /* enable/disable utf8 encoding */
+        sha256_K;
+
+      /* privileged (public) methods */
+      this.hex = function(s) {
+        return rstr2hex(rstr(s, utf8));
+      };
+      this.b64 = function(s) {
+        return rstr2b64(rstr(s, utf8), b64pad);
+      };
+      this.any = function(s, e) {
+        return rstr2any(rstr(s, utf8), e);
+      };
+      this.raw = function(s) {
+        return rstr(s, utf8);
+      };
+      this.hex_hmac = function(k, d) {
+        return rstr2hex(rstr_hmac(k, d));
+      };
+      this.b64_hmac = function(k, d) {
+        return rstr2b64(rstr_hmac(k, d), b64pad);
+      };
+      this.any_hmac = function(k, d, e) {
+        return rstr2any(rstr_hmac(k, d), e);
+      };
+      /**
+       * Perform a simple self-test to see if the VM is working
+       * @return {String} Hexadecimal hash sample
+       * @public
+       */
+      this.vm_test = function() {
+        return hex('abc').toLowerCase() === '900150983cd24fb0d6963f7d28e17f72';
+      };
+      /**
+       * Enable/disable uppercase hexadecimal returned string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUpperCase = function(a) {
+        if (typeof a === 'boolean') {
+          hexcase = a;
+        }
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {string} Pad
+       * @return {Object} this
+       * @public
+       */
+      this.setPad = function(a) {
+        b64pad = a || b64pad;
+        return this;
+      };
+      /**
+       * Defines a base64 pad string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUTF8 = function(a) {
+        if (typeof a === 'boolean') {
+          utf8 = a;
+        }
+        return this;
+      };
+
+      // private methods
+
+      /**
+       * Calculate the SHA-512 of a raw string
+       */
+
+      function rstr(s, utf8) {
+        s = (utf8) ? utf8Encode(s) : s;
+        return binb2rstr(binb(rstr2binb(s), s.length * 8));
+      }
+
+      /**
+       * Calculate the HMAC-sha256 of a key and some data (raw strings)
+       */
+
+      function rstr_hmac(key, data) {
+        key = (utf8) ? utf8Encode(key) : key;
+        data = (utf8) ? utf8Encode(data) : data;
+        var hash, i = 0,
+          bkey = rstr2binb(key),
+          ipad = Array(16),
+          opad = Array(16);
+
+        if (bkey.length > 16) {
+          bkey = binb(bkey, key.length * 8);
+        }
+
+        for (; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+
+        hash = binb(ipad.concat(rstr2binb(data)), 512 + data.length * 8);
+        return binb2rstr(binb(opad.concat(hash), 512 + 256));
+      }
+
+      /*
+       * Main sha256 function, with its support functions
+       */
+
+      function sha256_S(X, n) {
+        return (X >>> n) | (X << (32 - n));
+      }
+
+      function sha256_R(X, n) {
+        return (X >>> n);
+      }
+
+      function sha256_Ch(x, y, z) {
+        return ((x & y) ^ ((~x) & z));
+      }
+
+      function sha256_Maj(x, y, z) {
+        return ((x & y) ^ (x & z) ^ (y & z));
+      }
+
+      function sha256_Sigma0256(x) {
+        return (sha256_S(x, 2) ^ sha256_S(x, 13) ^ sha256_S(x, 22));
+      }
+
+      function sha256_Sigma1256(x) {
+        return (sha256_S(x, 6) ^ sha256_S(x, 11) ^ sha256_S(x, 25));
+      }
+
+      function sha256_Gamma0256(x) {
+        return (sha256_S(x, 7) ^ sha256_S(x, 18) ^ sha256_R(x, 3));
+      }
+
+      function sha256_Gamma1256(x) {
+        return (sha256_S(x, 17) ^ sha256_S(x, 19) ^ sha256_R(x, 10));
+      }
+
+      function sha256_Sigma0512(x) {
+        return (sha256_S(x, 28) ^ sha256_S(x, 34) ^ sha256_S(x, 39));
+      }
+
+      function sha256_Sigma1512(x) {
+        return (sha256_S(x, 14) ^ sha256_S(x, 18) ^ sha256_S(x, 41));
+      }
+
+      function sha256_Gamma0512(x) {
+        return (sha256_S(x, 1) ^ sha256_S(x, 8) ^ sha256_R(x, 7));
+      }
+
+      function sha256_Gamma1512(x) {
+        return (sha256_S(x, 19) ^ sha256_S(x, 61) ^ sha256_R(x, 6));
+      }
+
+      sha256_K = [
+        1116352408, 1899447441, -1245643825, -373957723, 961987163, 1508970993, -1841331548, -1424204075, -670586216, 310598401, 607225278, 1426881987,
+        1925078388, -2132889090, -1680079193, -1046744716, -459576895, -272742522,
+        264347078, 604807628, 770255983, 1249150122, 1555081692, 1996064986, -1740746414, -1473132947, -1341970488, -1084653625, -958395405, -710438585,
+        113926993, 338241895, 666307205, 773529912, 1294757372, 1396182291,
+        1695183700, 1986661051, -2117940946, -1838011259, -1564481375, -1474664885, -1035236496, -949202525, -778901479, -694614492, -200395387, 275423344,
+        430227734, 506948616, 659060556, 883997877, 958139571, 1322822218,
+        1537002063, 1747873779, 1955562222, 2024104815, -2067236844, -1933114872, -1866530822, -1538233109, -1090935817, -965641998
+      ];
+
+      function binb(m, l) {
+        var HASH = [1779033703, -1150833019, 1013904242, -1521486534,
+          1359893119, -1694144372, 528734635, 1541459225
+        ];
+        var W = new Array(64);
+        var a, b, c, d, e, f, g, h;
+        var i, j, T1, T2;
+
+        /* append padding */
+        m[l >> 5] |= 0x80 << (24 - l % 32);
+        m[((l + 64 >> 9) << 4) + 15] = l;
+
+        for (i = 0; i < m.length; i += 16) {
+          a = HASH[0];
+          b = HASH[1];
+          c = HASH[2];
+          d = HASH[3];
+          e = HASH[4];
+          f = HASH[5];
+          g = HASH[6];
+          h = HASH[7];
+
+          for (j = 0; j < 64; j += 1) {
+            if (j < 16) {
+              W[j] = m[j + i];
+            } else {
+              W[j] = safe_add(safe_add(safe_add(sha256_Gamma1256(W[j - 2]), W[j - 7]),
+                sha256_Gamma0256(W[j - 15])), W[j - 16]);
+            }
+
+            T1 = safe_add(safe_add(safe_add(safe_add(h, sha256_Sigma1256(e)), sha256_Ch(e, f, g)),
+              sha256_K[j]), W[j]);
+            T2 = safe_add(sha256_Sigma0256(a), sha256_Maj(a, b, c));
+            h = g;
+            g = f;
+            f = e;
+            e = safe_add(d, T1);
+            d = c;
+            c = b;
+            b = a;
+            a = safe_add(T1, T2);
+          }
+
+          HASH[0] = safe_add(a, HASH[0]);
+          HASH[1] = safe_add(b, HASH[1]);
+          HASH[2] = safe_add(c, HASH[2]);
+          HASH[3] = safe_add(d, HASH[3]);
+          HASH[4] = safe_add(e, HASH[4]);
+          HASH[5] = safe_add(f, HASH[5]);
+          HASH[6] = safe_add(g, HASH[6]);
+          HASH[7] = safe_add(h, HASH[7]);
+        }
+        return HASH;
+      }
+
+    },
+
+    /**
+     * @class Hashes.SHA512
+     * @param {config}
+     *
+     * A JavaScript implementation of the Secure Hash Algorithm, SHA-512, as defined in FIPS 180-2
+     * Version 2.2 Copyright Anonymous Contributor, Paul Johnston 2000 - 2009.
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * See http://pajhome.org.uk/crypt/md5 for details.
+     */
+    SHA512: function(options) {
+      /**
+       * Private properties configuration variables. You may need to tweak these to be compatible with
+       * the server-side, but the defaults work in most cases.
+       * @see this.setUpperCase() method
+       * @see this.setPad() method
+       */
+      var hexcase = (options && typeof options.uppercase === 'boolean') ? options.uppercase : false,
+        /* hexadecimal output case format. false - lowercase; true - uppercase  */
+        b64pad = (options && typeof options.pad === 'string') ? options.pad : '=',
+        /* base-64 pad character. Default '=' for strict RFC compliance   */
+        utf8 = (options && typeof options.utf8 === 'boolean') ? options.utf8 : true,
+        /* enable/disable utf8 encoding */
+        sha512_k;
+
+      /* privileged (public) methods */
+      this.hex = function(s) {
+        return rstr2hex(rstr(s));
+      };
+      this.b64 = function(s) {
+        return rstr2b64(rstr(s), b64pad);
+      };
+      this.any = function(s, e) {
+        return rstr2any(rstr(s), e);
+      };
+      this.raw = function(s) {
+        return rstr(s, utf8);
+      };
+      this.hex_hmac = function(k, d) {
+        return rstr2hex(rstr_hmac(k, d));
+      };
+      this.b64_hmac = function(k, d) {
+        return rstr2b64(rstr_hmac(k, d), b64pad);
+      };
+      this.any_hmac = function(k, d, e) {
+        return rstr2any(rstr_hmac(k, d), e);
+      };
+      /**
+       * Perform a simple self-test to see if the VM is working
+       * @return {String} Hexadecimal hash sample
+       * @public
+       */
+      this.vm_test = function() {
+        return hex('abc').toLowerCase() === '900150983cd24fb0d6963f7d28e17f72';
+      };
+      /**
+       * @description Enable/disable uppercase hexadecimal returned string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUpperCase = function(a) {
+        if (typeof a === 'boolean') {
+          hexcase = a;
+        }
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {string} Pad
+       * @return {Object} this
+       * @public
+       */
+      this.setPad = function(a) {
+        b64pad = a || b64pad;
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUTF8 = function(a) {
+        if (typeof a === 'boolean') {
+          utf8 = a;
+        }
+        return this;
+      };
+
+      /* private methods */
+
+      /**
+       * Calculate the SHA-512 of a raw string
+       */
+
+      function rstr(s) {
+        s = (utf8) ? utf8Encode(s) : s;
+        return binb2rstr(binb(rstr2binb(s), s.length * 8));
+      }
+      /*
+       * Calculate the HMAC-SHA-512 of a key and some data (raw strings)
+       */
+
+      function rstr_hmac(key, data) {
+        key = (utf8) ? utf8Encode(key) : key;
+        data = (utf8) ? utf8Encode(data) : data;
+
+        var hash, i = 0,
+          bkey = rstr2binb(key),
+          ipad = Array(32),
+          opad = Array(32);
+
+        if (bkey.length > 32) {
+          bkey = binb(bkey, key.length * 8);
+        }
+
+        for (; i < 32; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+
+        hash = binb(ipad.concat(rstr2binb(data)), 1024 + data.length * 8);
+        return binb2rstr(binb(opad.concat(hash), 1024 + 512));
+      }
+
+      /**
+       * Calculate the SHA-512 of an array of big-endian dwords, and a bit length
+       */
+
+      function binb(x, len) {
+        var j, i, l,
+          W = new Array(80),
+          hash = new Array(16),
+          //Initial hash values
+          H = [
+            new int64(0x6a09e667, -205731576),
+            new int64(-1150833019, -2067093701),
+            new int64(0x3c6ef372, -23791573),
+            new int64(-1521486534, 0x5f1d36f1),
+            new int64(0x510e527f, -1377402159),
+            new int64(-1694144372, 0x2b3e6c1f),
+            new int64(0x1f83d9ab, -79577749),
+            new int64(0x5be0cd19, 0x137e2179)
+          ],
+          T1 = new int64(0, 0),
+          T2 = new int64(0, 0),
+          a = new int64(0, 0),
+          b = new int64(0, 0),
+          c = new int64(0, 0),
+          d = new int64(0, 0),
+          e = new int64(0, 0),
+          f = new int64(0, 0),
+          g = new int64(0, 0),
+          h = new int64(0, 0),
+          //Temporary variables not specified by the document
+          s0 = new int64(0, 0),
+          s1 = new int64(0, 0),
+          Ch = new int64(0, 0),
+          Maj = new int64(0, 0),
+          r1 = new int64(0, 0),
+          r2 = new int64(0, 0),
+          r3 = new int64(0, 0);
+
+        if (sha512_k === undefined) {
+          //SHA512 constants
+          sha512_k = [
+            new int64(0x428a2f98, -685199838), new int64(0x71374491, 0x23ef65cd),
+            new int64(-1245643825, -330482897), new int64(-373957723, -2121671748),
+            new int64(0x3956c25b, -213338824), new int64(0x59f111f1, -1241133031),
+            new int64(-1841331548, -1357295717), new int64(-1424204075, -630357736),
+            new int64(-670586216, -1560083902), new int64(0x12835b01, 0x45706fbe),
+            new int64(0x243185be, 0x4ee4b28c), new int64(0x550c7dc3, -704662302),
+            new int64(0x72be5d74, -226784913), new int64(-2132889090, 0x3b1696b1),
+            new int64(-1680079193, 0x25c71235), new int64(-1046744716, -815192428),
+            new int64(-459576895, -1628353838), new int64(-272742522, 0x384f25e3),
+            new int64(0xfc19dc6, -1953704523), new int64(0x240ca1cc, 0x77ac9c65),
+            new int64(0x2de92c6f, 0x592b0275), new int64(0x4a7484aa, 0x6ea6e483),
+            new int64(0x5cb0a9dc, -1119749164), new int64(0x76f988da, -2096016459),
+            new int64(-1740746414, -295247957), new int64(-1473132947, 0x2db43210),
+            new int64(-1341970488, -1728372417), new int64(-1084653625, -1091629340),
+            new int64(-958395405, 0x3da88fc2), new int64(-710438585, -1828018395),
+            new int64(0x6ca6351, -536640913), new int64(0x14292967, 0xa0e6e70),
+            new int64(0x27b70a85, 0x46d22ffc), new int64(0x2e1b2138, 0x5c26c926),
+            new int64(0x4d2c6dfc, 0x5ac42aed), new int64(0x53380d13, -1651133473),
+            new int64(0x650a7354, -1951439906), new int64(0x766a0abb, 0x3c77b2a8),
+            new int64(-2117940946, 0x47edaee6), new int64(-1838011259, 0x1482353b),
+            new int64(-1564481375, 0x4cf10364), new int64(-1474664885, -1136513023),
+            new int64(-1035236496, -789014639), new int64(-949202525, 0x654be30),
+            new int64(-778901479, -688958952), new int64(-694614492, 0x5565a910),
+            new int64(-200395387, 0x5771202a), new int64(0x106aa070, 0x32bbd1b8),
+            new int64(0x19a4c116, -1194143544), new int64(0x1e376c08, 0x5141ab53),
+            new int64(0x2748774c, -544281703), new int64(0x34b0bcb5, -509917016),
+            new int64(0x391c0cb3, -976659869), new int64(0x4ed8aa4a, -482243893),
+            new int64(0x5b9cca4f, 0x7763e373), new int64(0x682e6ff3, -692930397),
+            new int64(0x748f82ee, 0x5defb2fc), new int64(0x78a5636f, 0x43172f60),
+            new int64(-2067236844, -1578062990), new int64(-1933114872, 0x1a6439ec),
+            new int64(-1866530822, 0x23631e28), new int64(-1538233109, -561857047),
+            new int64(-1090935817, -1295615723), new int64(-965641998, -479046869),
+            new int64(-903397682, -366583396), new int64(-779700025, 0x21c0c207),
+            new int64(-354779690, -840897762), new int64(-176337025, -294727304),
+            new int64(0x6f067aa, 0x72176fba), new int64(0xa637dc5, -1563912026),
+            new int64(0x113f9804, -1090974290), new int64(0x1b710b35, 0x131c471b),
+            new int64(0x28db77f5, 0x23047d84), new int64(0x32caab7b, 0x40c72493),
+            new int64(0x3c9ebe0a, 0x15c9bebc), new int64(0x431d67c4, -1676669620),
+            new int64(0x4cc5d4be, -885112138), new int64(0x597f299c, -60457430),
+            new int64(0x5fcb6fab, 0x3ad6faec), new int64(0x6c44198c, 0x4a475817)
+          ];
+        }
+
+        for (i = 0; i < 80; i += 1) {
+          W[i] = new int64(0, 0);
+        }
+
+        // append padding to the source string. The format is described in the FIPS.
+        x[len >> 5] |= 0x80 << (24 - (len & 0x1f));
+        x[((len + 128 >> 10) << 5) + 31] = len;
+        l = x.length;
+        for (i = 0; i < l; i += 32) { //32 dwords is the block size
+          int64copy(a, H[0]);
+          int64copy(b, H[1]);
+          int64copy(c, H[2]);
+          int64copy(d, H[3]);
+          int64copy(e, H[4]);
+          int64copy(f, H[5]);
+          int64copy(g, H[6]);
+          int64copy(h, H[7]);
+
+          for (j = 0; j < 16; j += 1) {
+            W[j].h = x[i + 2 * j];
+            W[j].l = x[i + 2 * j + 1];
+          }
+
+          for (j = 16; j < 80; j += 1) {
+            //sigma1
+            int64rrot(r1, W[j - 2], 19);
+            int64revrrot(r2, W[j - 2], 29);
+            int64shr(r3, W[j - 2], 6);
+            s1.l = r1.l ^ r2.l ^ r3.l;
+            s1.h = r1.h ^ r2.h ^ r3.h;
+            //sigma0
+            int64rrot(r1, W[j - 15], 1);
+            int64rrot(r2, W[j - 15], 8);
+            int64shr(r3, W[j - 15], 7);
+            s0.l = r1.l ^ r2.l ^ r3.l;
+            s0.h = r1.h ^ r2.h ^ r3.h;
+
+            int64add4(W[j], s1, W[j - 7], s0, W[j - 16]);
+          }
+
+          for (j = 0; j < 80; j += 1) {
+            //Ch
+            Ch.l = (e.l & f.l) ^ (~e.l & g.l);
+            Ch.h = (e.h & f.h) ^ (~e.h & g.h);
+
+            //Sigma1
+            int64rrot(r1, e, 14);
+            int64rrot(r2, e, 18);
+            int64revrrot(r3, e, 9);
+            s1.l = r1.l ^ r2.l ^ r3.l;
+            s1.h = r1.h ^ r2.h ^ r3.h;
+
+            //Sigma0
+            int64rrot(r1, a, 28);
+            int64revrrot(r2, a, 2);
+            int64revrrot(r3, a, 7);
+            s0.l = r1.l ^ r2.l ^ r3.l;
+            s0.h = r1.h ^ r2.h ^ r3.h;
+
+            //Maj
+            Maj.l = (a.l & b.l) ^ (a.l & c.l) ^ (b.l & c.l);
+            Maj.h = (a.h & b.h) ^ (a.h & c.h) ^ (b.h & c.h);
+
+            int64add5(T1, h, s1, Ch, sha512_k[j], W[j]);
+            int64add(T2, s0, Maj);
+
+            int64copy(h, g);
+            int64copy(g, f);
+            int64copy(f, e);
+            int64add(e, d, T1);
+            int64copy(d, c);
+            int64copy(c, b);
+            int64copy(b, a);
+            int64add(a, T1, T2);
+          }
+          int64add(H[0], H[0], a);
+          int64add(H[1], H[1], b);
+          int64add(H[2], H[2], c);
+          int64add(H[3], H[3], d);
+          int64add(H[4], H[4], e);
+          int64add(H[5], H[5], f);
+          int64add(H[6], H[6], g);
+          int64add(H[7], H[7], h);
+        }
+
+        //represent the hash as an array of 32-bit dwords
+        for (i = 0; i < 8; i += 1) {
+          hash[2 * i] = H[i].h;
+          hash[2 * i + 1] = H[i].l;
+        }
+        return hash;
+      }
+
+      //A constructor for 64-bit numbers
+
+      function int64(h, l) {
+        this.h = h;
+        this.l = l;
+        //this.toString = int64toString;
+      }
+
+      //Copies src into dst, assuming both are 64-bit numbers
+
+      function int64copy(dst, src) {
+        dst.h = src.h;
+        dst.l = src.l;
+      }
+
+      //Right-rotates a 64-bit number by shift
+      //Won't handle cases of shift>=32
+      //The function revrrot() is for that
+
+      function int64rrot(dst, x, shift) {
+        dst.l = (x.l >>> shift) | (x.h << (32 - shift));
+        dst.h = (x.h >>> shift) | (x.l << (32 - shift));
+      }
+
+      //Reverses the dwords of the source and then rotates right by shift.
+      //This is equivalent to rotation by 32+shift
+
+      function int64revrrot(dst, x, shift) {
+        dst.l = (x.h >>> shift) | (x.l << (32 - shift));
+        dst.h = (x.l >>> shift) | (x.h << (32 - shift));
+      }
+
+      //Bitwise-shifts right a 64-bit number by shift
+      //Won't handle shift>=32, but it's never needed in SHA512
+
+      function int64shr(dst, x, shift) {
+        dst.l = (x.l >>> shift) | (x.h << (32 - shift));
+        dst.h = (x.h >>> shift);
+      }
+
+      //Adds two 64-bit numbers
+      //Like the original implementation, does not rely on 32-bit operations
+
+      function int64add(dst, x, y) {
+        var w0 = (x.l & 0xffff) + (y.l & 0xffff);
+        var w1 = (x.l >>> 16) + (y.l >>> 16) + (w0 >>> 16);
+        var w2 = (x.h & 0xffff) + (y.h & 0xffff) + (w1 >>> 16);
+        var w3 = (x.h >>> 16) + (y.h >>> 16) + (w2 >>> 16);
+        dst.l = (w0 & 0xffff) | (w1 << 16);
+        dst.h = (w2 & 0xffff) | (w3 << 16);
+      }
+
+      //Same, except with 4 addends. Works faster than adding them one by one.
+
+      function int64add4(dst, a, b, c, d) {
+        var w0 = (a.l & 0xffff) + (b.l & 0xffff) + (c.l & 0xffff) + (d.l & 0xffff);
+        var w1 = (a.l >>> 16) + (b.l >>> 16) + (c.l >>> 16) + (d.l >>> 16) + (w0 >>> 16);
+        var w2 = (a.h & 0xffff) + (b.h & 0xffff) + (c.h & 0xffff) + (d.h & 0xffff) + (w1 >>> 16);
+        var w3 = (a.h >>> 16) + (b.h >>> 16) + (c.h >>> 16) + (d.h >>> 16) + (w2 >>> 16);
+        dst.l = (w0 & 0xffff) | (w1 << 16);
+        dst.h = (w2 & 0xffff) | (w3 << 16);
+      }
+
+      //Same, except with 5 addends
+
+      function int64add5(dst, a, b, c, d, e) {
+        var w0 = (a.l & 0xffff) + (b.l & 0xffff) + (c.l & 0xffff) + (d.l & 0xffff) + (e.l & 0xffff),
+          w1 = (a.l >>> 16) + (b.l >>> 16) + (c.l >>> 16) + (d.l >>> 16) + (e.l >>> 16) + (w0 >>> 16),
+          w2 = (a.h & 0xffff) + (b.h & 0xffff) + (c.h & 0xffff) + (d.h & 0xffff) + (e.h & 0xffff) + (w1 >>> 16),
+          w3 = (a.h >>> 16) + (b.h >>> 16) + (c.h >>> 16) + (d.h >>> 16) + (e.h >>> 16) + (w2 >>> 16);
+        dst.l = (w0 & 0xffff) | (w1 << 16);
+        dst.h = (w2 & 0xffff) | (w3 << 16);
+      }
+    },
+    /**
+     * @class Hashes.RMD160
+     * @constructor
+     * @param {Object} [config]
+     *
+     * A JavaScript implementation of the RIPEMD-160 Algorithm
+     * Version 2.2 Copyright Jeremy Lin, Paul Johnston 2000 - 2009.
+     * Other contributors: Greg Holt, Andrew Kepert, Ydnar, Lostinet
+     * See http://pajhome.org.uk/crypt/md5 for details.
+     * Also http://www.ocf.berkeley.edu/~jjlin/jsotp/
+     */
+    RMD160: function(options) {
+      /**
+       * Private properties configuration variables. You may need to tweak these to be compatible with
+       * the server-side, but the defaults work in most cases.
+       * @see this.setUpperCase() method
+       * @see this.setPad() method
+       */
+      var hexcase = (options && typeof options.uppercase === 'boolean') ? options.uppercase : false,
+        /* hexadecimal output case format. false - lowercase; true - uppercase  */
+        b64pad = (options && typeof options.pad === 'string') ? options.pa : '=',
+        /* base-64 pad character. Default '=' for strict RFC compliance   */
+        utf8 = (options && typeof options.utf8 === 'boolean') ? options.utf8 : true,
+        /* enable/disable utf8 encoding */
+        rmd160_r1 = [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+          7, 4, 13, 1, 10, 6, 15, 3, 12, 0, 9, 5, 2, 14, 11, 8,
+          3, 10, 14, 4, 9, 15, 8, 1, 2, 7, 0, 6, 13, 11, 5, 12,
+          1, 9, 11, 10, 0, 8, 12, 4, 13, 3, 7, 15, 14, 5, 6, 2,
+          4, 0, 5, 9, 7, 12, 2, 10, 14, 1, 3, 8, 11, 6, 15, 13
+        ],
+        rmd160_r2 = [
+          5, 14, 7, 0, 9, 2, 11, 4, 13, 6, 15, 8, 1, 10, 3, 12,
+          6, 11, 3, 7, 0, 13, 5, 10, 14, 15, 8, 12, 4, 9, 1, 2,
+          15, 5, 1, 3, 7, 14, 6, 9, 11, 8, 12, 2, 10, 0, 4, 13,
+          8, 6, 4, 1, 3, 11, 15, 0, 5, 12, 2, 13, 9, 7, 10, 14,
+          12, 15, 10, 4, 1, 5, 8, 7, 6, 2, 13, 14, 0, 3, 9, 11
+        ],
+        rmd160_s1 = [
+          11, 14, 15, 12, 5, 8, 7, 9, 11, 13, 14, 15, 6, 7, 9, 8,
+          7, 6, 8, 13, 11, 9, 7, 15, 7, 12, 15, 9, 11, 7, 13, 12,
+          11, 13, 6, 7, 14, 9, 13, 15, 14, 8, 13, 6, 5, 12, 7, 5,
+          11, 12, 14, 15, 14, 15, 9, 8, 9, 14, 5, 6, 8, 6, 5, 12,
+          9, 15, 5, 11, 6, 8, 13, 12, 5, 12, 13, 14, 11, 8, 5, 6
+        ],
+        rmd160_s2 = [
+          8, 9, 9, 11, 13, 15, 15, 5, 7, 7, 8, 11, 14, 14, 12, 6,
+          9, 13, 15, 7, 12, 8, 9, 11, 7, 7, 12, 7, 6, 15, 13, 11,
+          9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5,
+          15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8,
+          8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11
+        ];
+
+      /* privileged (public) methods */
+      this.hex = function(s) {
+        return rstr2hex(rstr(s, utf8));
+      };
+      this.b64 = function(s) {
+        return rstr2b64(rstr(s, utf8), b64pad);
+      };
+      this.any = function(s, e) {
+        return rstr2any(rstr(s, utf8), e);
+      };
+      this.raw = function(s) {
+        return rstr(s, utf8);
+      };
+      this.hex_hmac = function(k, d) {
+        return rstr2hex(rstr_hmac(k, d));
+      };
+      this.b64_hmac = function(k, d) {
+        return rstr2b64(rstr_hmac(k, d), b64pad);
+      };
+      this.any_hmac = function(k, d, e) {
+        return rstr2any(rstr_hmac(k, d), e);
+      };
+      /**
+       * Perform a simple self-test to see if the VM is working
+       * @return {String} Hexadecimal hash sample
+       * @public
+       */
+      this.vm_test = function() {
+        return hex('abc').toLowerCase() === '900150983cd24fb0d6963f7d28e17f72';
+      };
+      /**
+       * @description Enable/disable uppercase hexadecimal returned string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUpperCase = function(a) {
+        if (typeof a === 'boolean') {
+          hexcase = a;
+        }
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {string} Pad
+       * @return {Object} this
+       * @public
+       */
+      this.setPad = function(a) {
+        if (typeof a !== 'undefined') {
+          b64pad = a;
+        }
+        return this;
+      };
+      /**
+       * @description Defines a base64 pad string
+       * @param {boolean}
+       * @return {Object} this
+       * @public
+       */
+      this.setUTF8 = function(a) {
+        if (typeof a === 'boolean') {
+          utf8 = a;
+        }
+        return this;
+      };
+
+      /* private methods */
+
+      /**
+       * Calculate the rmd160 of a raw string
+       */
+
+      function rstr(s) {
+        s = (utf8) ? utf8Encode(s) : s;
+        return binl2rstr(binl(rstr2binl(s), s.length * 8));
+      }
+
+      /**
+       * Calculate the HMAC-rmd160 of a key and some data (raw strings)
+       */
+
+      function rstr_hmac(key, data) {
+        key = (utf8) ? utf8Encode(key) : key;
+        data = (utf8) ? utf8Encode(data) : data;
+        var i, hash,
+          bkey = rstr2binl(key),
+          ipad = Array(16),
+          opad = Array(16);
+
+        if (bkey.length > 16) {
+          bkey = binl(bkey, key.length * 8);
+        }
+
+        for (i = 0; i < 16; i += 1) {
+          ipad[i] = bkey[i] ^ 0x36363636;
+          opad[i] = bkey[i] ^ 0x5C5C5C5C;
+        }
+        hash = binl(ipad.concat(rstr2binl(data)), 512 + data.length * 8);
+        return binl2rstr(binl(opad.concat(hash), 512 + 160));
+      }
+
+      /**
+       * Convert an array of little-endian words to a string
+       */
+
+      function binl2rstr(input) {
+        var i, output = '',
+          l = input.length * 32;
+        for (i = 0; i < l; i += 8) {
+          output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
+        }
+        return output;
+      }
+
+      /**
+       * Calculate the RIPE-MD160 of an array of little-endian words, and a bit length.
+       */
+
+      function binl(x, len) {
+        var T, j, i, l,
+          h0 = 0x67452301,
+          h1 = 0xefcdab89,
+          h2 = 0x98badcfe,
+          h3 = 0x10325476,
+          h4 = 0xc3d2e1f0,
+          A1, B1, C1, D1, E1,
+          A2, B2, C2, D2, E2;
+
+        /* append padding */
+        x[len >> 5] |= 0x80 << (len % 32);
+        x[(((len + 64) >>> 9) << 4) + 14] = len;
+        l = x.length;
+
+        for (i = 0; i < l; i += 16) {
+          A1 = A2 = h0;
+          B1 = B2 = h1;
+          C1 = C2 = h2;
+          D1 = D2 = h3;
+          E1 = E2 = h4;
+          for (j = 0; j <= 79; j += 1) {
+            T = safe_add(A1, rmd160_f(j, B1, C1, D1));
+            T = safe_add(T, x[i + rmd160_r1[j]]);
+            T = safe_add(T, rmd160_K1(j));
+            T = safe_add(bit_rol(T, rmd160_s1[j]), E1);
+            A1 = E1;
+            E1 = D1;
+            D1 = bit_rol(C1, 10);
+            C1 = B1;
+            B1 = T;
+            T = safe_add(A2, rmd160_f(79 - j, B2, C2, D2));
+            T = safe_add(T, x[i + rmd160_r2[j]]);
+            T = safe_add(T, rmd160_K2(j));
+            T = safe_add(bit_rol(T, rmd160_s2[j]), E2);
+            A2 = E2;
+            E2 = D2;
+            D2 = bit_rol(C2, 10);
+            C2 = B2;
+            B2 = T;
+          }
+
+          T = safe_add(h1, safe_add(C1, D2));
+          h1 = safe_add(h2, safe_add(D1, E2));
+          h2 = safe_add(h3, safe_add(E1, A2));
+          h3 = safe_add(h4, safe_add(A1, B2));
+          h4 = safe_add(h0, safe_add(B1, C2));
+          h0 = T;
+        }
+        return [h0, h1, h2, h3, h4];
+      }
+
+      // specific algorithm methods
+
+      function rmd160_f(j, x, y, z) {
+        return (0 <= j && j <= 15) ? (x ^ y ^ z) :
+          (16 <= j && j <= 31) ? (x & y) | (~x & z) :
+          (32 <= j && j <= 47) ? (x | ~y) ^ z :
+          (48 <= j && j <= 63) ? (x & z) | (y & ~z) :
+          (64 <= j && j <= 79) ? x ^ (y | ~z) :
+          'rmd160_f: j out of range';
+      }
+
+      function rmd160_K1(j) {
+        return (0 <= j && j <= 15) ? 0x00000000 :
+          (16 <= j && j <= 31) ? 0x5a827999 :
+          (32 <= j && j <= 47) ? 0x6ed9eba1 :
+          (48 <= j && j <= 63) ? 0x8f1bbcdc :
+          (64 <= j && j <= 79) ? 0xa953fd4e :
+          'rmd160_K1: j out of range';
+      }
+
+      function rmd160_K2(j) {
+        return (0 <= j && j <= 15) ? 0x50a28be6 :
+          (16 <= j && j <= 31) ? 0x5c4dd124 :
+          (32 <= j && j <= 47) ? 0x6d703ef3 :
+          (48 <= j && j <= 63) ? 0x7a6d76e9 :
+          (64 <= j && j <= 79) ? 0x00000000 :
+          'rmd160_K2: j out of range';
+      }
+    }
+  };
+
+  // exposes Hashes
+  (function(window, undefined) {
+    var freeExports = false;
+    if (true) {
+      freeExports = exports;
+      if (exports && typeof __webpack_require__.g === 'object' && __webpack_require__.g && __webpack_require__.g === __webpack_require__.g.global) {
+        window = __webpack_require__.g;
+      }
+    }
+
+    if (true) {
+      // define as an anonymous module, so, through path mapping, it can be aliased
+      !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
+        return Hashes;
+      }).call(exports, __webpack_require__, exports, module),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+    } else {}
+  }(this));
+}()); // IIFE
+
+
+/***/ }),
+
+/***/ "./node_modules/mock-xmlhttprequest/dist/mock-xmlhttprequest.esm.js":
+/*!**************************************************************************!*\
+  !*** ./node_modules/mock-xmlhttprequest/dist/mock-xmlhttprequest.esm.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MockXhr": () => (/* binding */ MockXhr),
+/* harmony export */   "MockXhrServer": () => (/* binding */ MockXhrServer),
+/* harmony export */   "newMockXhr": () => (/* binding */ newMockXhr),
+/* harmony export */   "newServer": () => (/* binding */ newServer)
+/* harmony export */ });
+/**
+ * mock-xmlhttprequest v7.0.4
+ * (c) 2021 Bertrand Guay-Paquet
+ * @license ISC
+ */
+/**
+ * XMLHttpRequest events
+ */
+class Event {
+  /**
+   * @param {string} type event type
+   * @param {number} loaded loaded bytes
+   * @param {number} total total bytes
+   */
+  constructor(type, loaded, total) {
+    this.type = type;
+    this.loaded = loaded !== undefined ? loaded : 0;
+    if (total > 0) {
+      this.total = total;
+      this.lengthComputable = true;
+    } else {
+      this.total = 0;
+      this.lengthComputable = false;
+    }
+  }
+}
+
+function flattenUseCaptureFlag(options) {
+  if (typeof options === 'boolean') {
+    return options;
+  }
+  return !!options.capture;
+}
+
+/**
+ * An EventTarget object represents a target to which an event can be dispatched when something has
+ * occurred.
+ *
+ * Based on https://dom.spec.whatwg.org/#interface-eventtarget
+ */
+class EventTarget {
+  /**
+   * Contructor
+   *
+   * @param {?object} eventContext optional "this" for event handlers
+   */
+  constructor(eventContext = this) {
+    this._eventContext = eventContext;
+    this._eventListeners = {};
+  }
+
+  /**
+   * @returns {boolean} whether any event listener is registered
+   */
+  hasListeners() {
+    return EventTarget.events.some((event) => {
+      return this._eventListeners[event] || this[`on${event}`];
+    });
+  }
+
+  /**
+   * Add an event listener.
+   * See https://dom.spec.whatwg.org/#dom-eventtarget-addeventlistener
+   *
+   * @param {string} type event type ('load', 'abort', etc)
+   * @param {EventListener|Function} callback listener callback
+   * @param {boolean|object} options options object or the useCapture flag
+   */
+  addEventListener(type, callback, options = false) {
+    if (callback) {
+      const useCapture = flattenUseCaptureFlag(options);
+      const listener = {
+        callback,
+        useCapture,
+        once: !!options.once,
+      };
+
+      this._eventListeners[type] = this._eventListeners[type] || [];
+
+      // If eventTarget’s event listener list does not contain an event listener whose type is
+      // listener’s type, callback is listener’s callback, and capture is listener’s capture, then
+      // append listener to eventTarget’s event listener list.
+      // See https://dom.spec.whatwg.org/#add-an-event-listener
+      if (!this._eventListeners[type].some((other) => {
+        return other.callback === listener.callback && other.useCapture === listener.useCapture;
+      })) {
+        this._eventListeners[type].push(listener);
+      }
+    }
+  }
+
+  /**
+   * Remove an event listener.
+   * See https://dom.spec.whatwg.org/#dom-eventtarget-removeeventlistener
+   *
+   * @param {string} type event type ('load', 'abort', etc)
+   * @param {EventListener|Function} callback listener callback
+   * @param {boolean|object} options options object or the useCapture flag
+   */
+  removeEventListener(type, callback, options = false) {
+    if (this._eventListeners[type]) {
+      const useCapture = flattenUseCaptureFlag(options);
+      const index = this._eventListeners[type].findIndex((listener) => {
+        return callback === listener.callback && useCapture === listener.useCapture;
+      });
+      if (index >= 0) {
+        this._eventListeners[type].splice(index, 1);
+      }
+    }
+  }
+
+  /**
+   * Calls all the listeners for the event.
+   *
+   * @param {object} event event
+   * @returns {boolean} always true since none of the xhr event are cancelable
+   */
+  dispatchEvent(event) {
+    // Only the event listeners registered at this point should be called. Storing them here avoids
+    // problems with callbacks that add or remove listeners.
+    const listeners = [];
+    if (this._eventListeners[event.type]) {
+      listeners.push(...this._eventListeners[event.type].map((listener) => listener.callback));
+
+      // Remove 'once' listeners
+      this._eventListeners[event.type] = this._eventListeners[event.type]
+        .filter((listener) => !listener.once);
+    }
+
+    // Handle event listeners added as object properties (e.g. obj.onload = ...)
+    if (EventTarget.events.includes(event.type)) {
+      const listener = this[`on${event.type}`];
+      if (listener) {
+        listeners.push(listener);
+      }
+    }
+
+    // Call the listeners
+    listeners.forEach((listener) => {
+      if (typeof listener === 'function') {
+        listener.call(this._eventContext, event);
+      } else {
+        listener.handleEvent();
+      }
+    });
+    return true;
+  }
+}
+
+/**
+ * XMLHttpRequest events
+ */
+EventTarget.events = [
+  'loadstart',
+  'progress',
+  'abort',
+  'error',
+  'load',
+  'timeout',
+  'loadend',
+];
+
+/**
+ * HTTP header container
+ */
+class HeadersContainer {
+  /**
+   * @param {object} headers initial headers
+   */
+  constructor(headers) {
+    this._headers = new Map();
+    if (headers && headers instanceof Object) {
+      Object.keys(headers).forEach((key) => {
+        this.addHeader(key, headers[key]);
+      });
+    }
+  }
+
+  /**
+   * Reset the container to its empty state.
+   */
+  reset() {
+    this._headers.clear();
+  }
+
+  /**
+   * Get header value. Header names are case-insensitive.
+   *
+   * @param  {string} name header name
+   * @returns {string|null} header value or null
+   */
+  getHeader(name) {
+    const value = this._headers.get(name.toLowerCase());
+    return value !== undefined ? value : null;
+  }
+
+  /**
+   * Get all headers as a string. Each header is on its own line.
+   *
+   * @returns {string} concatenated headers
+   */
+  getAll() {
+    // Sort the header names. It's not mandated by RFC 7230 but it makes assertion testing easier
+    // and, most importantly, it is required by getAllResponseHeaders() of XMLHttpRequest.
+    // See https://xhr.spec.whatwg.org/#the-getallresponseheaders()-method
+    const headerNames = [...this._headers.keys()].sort((a, b) => {
+      if (a.toUpperCase() < b.toUpperCase()) {
+        return -1;
+      }
+      if (a.toUpperCase() > b.toUpperCase()) {
+        return 1;
+      }
+      return 0;
+    });
+
+    // Combine the header values
+    const headers = headerNames.reduce((result, name) => {
+      const headerValue = this._headers.get(name);
+      return `${result}${name}: ${headerValue}\r\n`;
+    }, '');
+    return headers;
+  }
+
+  /**
+   * Get all headers as an object.
+   *
+   * @returns {object} headers
+   */
+  getHash() {
+    const headers = {};
+    this._headers.forEach((value, name) => {
+      headers[name] = value;
+    });
+    return headers;
+  }
+
+  /**
+   * Add a header value, combining it with any previous value for the same header name.
+   *
+   * @param {string} name header name
+   * @param {string} value header value
+   */
+  addHeader(name, value) {
+    name = name.toLowerCase();
+    const currentValue = this._headers.get(name);
+    if (currentValue) {
+      value = `${currentValue}, ${value}`;
+    }
+    this._headers.set(name, value);
+  }
+}
+
+function getBodyByteSize(body) {
+  if (!body) {
+    return 0;
+  }
+
+  if (typeof body === 'string') {
+    return getStringByteLength(body);
+  } else if ((__webpack_require__.g.FormData && body instanceof __webpack_require__.g.FormData)
+    || (body.constructor && body.constructor.name === 'FormData')) {
+    // A FormData has field-value pairs. This testing code only sums the individual sizes of the
+    // values. The full multipart/form-data encoding also adds headers, encoding, etc. which we
+    // don't reproduce here.
+    return Array.from(body.values()).reduce((sum, value) => {
+      const valueSize = value.size || getStringByteLength(String(value));
+      return sum + valueSize;
+    }, 0);
+  }
+
+  // Handles Blob and BufferSource
+  return body.size || body.byteLength || 0;
+}
+
+function getStringByteLength(string) {
+  // Compute the byte length of the string (which is not the same as string.length)
+  return __webpack_require__.g.Blob ? new __webpack_require__.g.Blob(string).size : Buffer.byteLength(string);
+}
+
+// Disallowed request headers for setRequestHeader()
+const forbiddenHeaders = [
+  'Accept-Charset',
+  'Accept-Encoding',
+  'Access-Control-Request-Headers',
+  'Access-Control-Request-Method',
+  'Connection',
+  'Content-Length',
+  'Cookie',
+  'Cookie2',
+  'Date',
+  'DNT',
+  'Expect',
+  'Host',
+  'Keep-Alive',
+  'Origin',
+  'Referer',
+  'TE',
+  'Trailer',
+  'Transfer-Encoding',
+  'Upgrade',
+  'Via',
+];
+const forbiddenHeaderRegEx = new RegExp(`^(${forbiddenHeaders.join('|')}|Proxy-.*|Sec-.*)$`, 'i');
+
+/**
+ * See https://fetch.spec.whatwg.org/#forbidden-header-name
+ *
+ * @param {string} name header name
+ * @returns {boolean} whether the request header name is forbidden for XMLHttpRequest
+ */
+function isRequestHeaderForbidden(name) {
+  return forbiddenHeaderRegEx.test(name);
+}
+
+/**
+ * See https://fetch.spec.whatwg.org/#forbidden-method
+ *
+ * @param {string} name method name
+ * @returns {boolean} whether the request method is forbidden for XMLHttpRequest
+ */
+function isRequestMethodForbidden(method) {
+  return /^(CONNECT|TRACE|TRACK)$/i.test(method);
+}
+
+// Normalize method names as described in open()
+// https://xhr.spec.whatwg.org/#the-open()-method
+const upperCaseMethods = [
+  'DELETE',
+  'GET',
+  'HEAD',
+  'OPTIONS',
+  'POST',
+  'PUT',
+];
+const upperCaseMethodsRegEx = new RegExp(`^(${upperCaseMethods.join('|')})$`, 'i');
+
+/**
+ * See https://fetch.spec.whatwg.org/#concept-method-normalize
+ *
+ * @param {string} method HTTP method name
+ * @returns {string} normalized method name
+ */
+function normalizeHTTPMethodName(method) {
+  if (upperCaseMethodsRegEx.test(method)) {
+    method = method.toUpperCase();
+  }
+  return method;
+}
+
+// Status code reason phrases from RFC 7231 §6.1, RFC 4918, RFC 5842, RFC 6585 and RFC 7538
+const statusTexts = {
+  100: 'Continue',
+  101: 'Switching Protocols',
+  200: 'OK',
+  201: 'Created',
+  202: 'Accepted',
+  203: 'Non-Authoritative Information',
+  204: 'No Content',
+  205: 'Reset Content',
+  206: 'Partial Content', // RFC 7233
+  207: 'Multi-Status', // RFC 4918
+  208: 'Already Reported', // RFC 5842
+  300: 'Multiple Choices',
+  301: 'Moved Permanently',
+  302: 'Found',
+  303: 'See Other',
+  304: 'Not Modified', // RFC 7232
+  305: 'Use Proxy',
+  307: 'Temporary Redirect',
+  308: 'Permanent Redirect', // RFC 7538
+  400: 'Bad Request',
+  401: 'Unauthorized', // RFC 7235
+  402: 'Payment Required',
+  403: 'Forbidden',
+  404: 'Not Found',
+  405: 'Method Not Allowed',
+  406: 'Not Acceptable',
+  407: 'Proxy Authentication Required', // RFC 7235
+  408: 'Request Timeout',
+  409: 'Conflict',
+  410: 'Gone',
+  411: 'Length Required',
+  412: 'Precondition Failed', // RFC 7232
+  413: 'Payload Too Large',
+  414: 'URI Too Long',
+  415: 'Unsupported Media Type',
+  416: 'Range Not Satisfiable', // RFC 7233
+  417: 'Expectation Failed',
+  422: 'Unprocessable Entity', // RFC 4918
+  423: 'Locked', // RFC 4918
+  424: 'Failed Dependency', // RFC 4918
+  426: 'Upgrade Required',
+  428: 'Precondition Required', // RFC 6585
+  429: 'Too Many Requests', // RFC 6585
+  431: 'Request Header Fields Too Large', // RFC 6585
+  500: 'Internal Server Error',
+  501: 'Not Implemented',
+  502: 'Bad Gateway',
+  503: 'Service Unavailable',
+  504: 'Gateway Timeout',
+  505: 'HTTP Version Not Supported',
+  507: 'Insufficient Storage', // RFC 4918
+  511: 'Network Authentication Required', // RFC 6585
+};
+
+/**
+ * @param {number} status HTTP status code
+ * @returns {string} status text
+ */
+function getStatusText(status) {
+  return statusTexts[status] || 'Unknown Status';
+}
+
+function throwError(type, text = '') {
+  const exception = new Error(text);
+  exception.name = type;
+  throw exception;
+}
+
+/**
+ * XMLHttpRequest mock for testing.
+ * Based on https://xhr.spec.whatwg.org version '18 August 2020'.
+ *
+ * Supports:
+ *  - events and states
+ *  - open(), setRequestHeader(), send() and abort()
+ *  - upload and download progress events
+ *  - response status, statusText, headers and body
+ *  - the timeout attribute (can be disabled) (since v4.0.0)
+ *  - simulating a network error
+ *  - simulating a request timeout (see MockXhr.setRequestTimeout())
+ *
+ * Partial support:
+ *  - overrideMimeType(): throws when required, but has no other effect.
+ *  - responseType: '', 'text' and 'json' are fully supported. Other responseType values can also be
+ *    used, but they will return the response body given to setResponseBody() as-is in xhr.response.
+ *  - responseXml: the response body is not converted to a document response. To get a document
+ *    response, use it directly as the response body in setResponseBody().
+ *
+ * Not supported:
+ * - synchronous requests (i.e. async == false)
+ * - parsing the url and setting the username and password since there are no actual HTTP requests
+ * - responseUrl (i.e. the final request url with redirects) is not automatically set. This can be
+ *   emulated in a request handler.
+ */
+class MockXhr extends EventTarget {
+  /**
+   * Constructor
+   */
+  constructor() {
+    super();
+    this._readyState = MockXhr.UNSENT;
+    this.requestHeaders = new HeadersContainer();
+    this._withCredentials = false;
+    this._timeout = 0;
+    this._upload = new EventTarget(this);
+    this._response = this._networkErrorResponse();
+
+    // Per-instance flag to enable the effects of the timeout attribute
+    this.timeoutEnabled = true;
+
+    // Hook for XMLHttpRequest creation
+    if (typeof MockXhr.onCreate === 'function') {
+      MockXhr.onCreate(this);
+    }
+  }
+
+  ////////////
+  // States //
+  ////////////
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
+   *
+   * @returns {number} readystate attribute
+   */
+  get readyState() {
+    return this._readyState;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {number} value
+   */
+  set readyState(value) { return value; }
+
+  /////////////
+  // Request //
+  /////////////
+
+  /**
+   * Set the request method and url.
+   * https://xhr.spec.whatwg.org/#the-open()-method
+   *
+   * @param {string} method request HTTP method (GET, POST, etc.)
+   * @param {string} url request url
+   * @param {boolean} async async request flag (only true is supported)
+   */
+  open(method, url, async = true) {
+    if (!async) {
+      throw new Error('async = false is not supported.');
+    }
+    if (isRequestMethodForbidden(method)) {
+      throwError('SecurityError', `Method "${method}" forbidden.`);
+    }
+    method = normalizeHTTPMethodName(method);
+    // Skip parsing the url and setting the username and password
+
+    this._terminateRequest();
+
+    // Set variables
+    this._sendFlag = false;
+    this._uploadListenerFlag = false;
+    this.method = method;
+    this.url = url;
+    this.requestHeaders.reset();
+    this._response = this._networkErrorResponse();
+    if (this._readyState !== MockXhr.OPENED) {
+      this._readyState = MockXhr.OPENED;
+      this._fireReadyStateChange();
+    }
+  }
+
+  /**
+   * Add a request header value.
+   * https://xhr.spec.whatwg.org/#the-setrequestheader()-method
+   *
+   * @param {string} name header name
+   * @param {string} value header value
+   */
+  setRequestHeader(name, value) {
+    if (this._readyState !== MockXhr.OPENED || this._sendFlag) {
+      throwError('InvalidStateError');
+    }
+    if (typeof name !== 'string' || typeof value !== 'string') {
+      throw new SyntaxError();
+    }
+
+    if (!isRequestHeaderForbidden(name)) {
+      // Normalize value
+      value = value.trim();
+      this.requestHeaders.addHeader(name, value);
+    }
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-timeout
+   *
+   * @returns {number} timeout attribute
+   */
+  get timeout() {
+    return this._timeout;
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-timeout
+   *
+   * @param {number} value timeout value
+   */
+  set timeout(value) {
+    // Since this library is meant to run on node, skip the step involving the Window object.
+    this._timeout = value;
+    if (this._sendFlag && this.timeoutEnabled && this.constructor.timeoutEnabled) {
+      // A fetch is active so schedule a request timeout
+      this._scheduleRequestTimeout();
+    }
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-withcredentials
+   *
+   * @returns {boolean} withCredentials attribute
+   */
+  get withCredentials() {
+    return this._withCredentials;
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-withcredentials
+   *
+   * @param {boolean} value withCredentials value
+   */
+  set withCredentials(value) {
+    if ((this._readyState !== MockXhr.UNSENT && this._readyState !== MockXhr.OPENED)
+      || this._sendFlag) {
+      throwError('InvalidStateError');
+    }
+    this._withCredentials = !!value;
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#the-upload-attribute
+   *
+   * @returns {EventTarget} upload attribute
+   */
+  get upload() {
+    return this._upload;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {EventTarget} value
+   */
+  set upload(value) { return value; }
+
+  /**
+   * Initiate the request.
+   * https://xhr.spec.whatwg.org/#the-send()-method
+   *
+   * @param {*} body request body
+   */
+  send(body = null) {
+    if (this._readyState !== MockXhr.OPENED || this._sendFlag) {
+      throwError('InvalidStateError');
+    }
+    if (this.method === 'GET' || this.method === 'HEAD') {
+      body = null;
+    }
+
+    if (body !== null) {
+      let extractedContentType = null;
+
+      // Document body type not supported
+
+      // https://fetch.spec.whatwg.org/#concept-bodyinit-extract
+      {
+        let contentType = null;
+        if (typeof body === 'string') {
+          contentType = 'text/plain;charset=UTF-8';
+        } else if (body.type) {
+          // As specified for Blob
+          contentType = body.type;
+        }
+
+        // BufferSource, FormData, etc. not handled specially
+        extractedContentType = contentType;
+      }
+
+      /*
+      * Skipping step "4. If author request headers contains `Content-Type`, then:"
+      * Parsing mime type strings and overriding the charset to UTF-8 seems like a lot of work
+      * for little gain. If I'm wrong, please open an issue or better yet a pull request.
+      */
+
+      if (this.requestHeaders.getHeader('Content-Type') === null && extractedContentType !== null) {
+        this.requestHeaders.addHeader('Content-Type', extractedContentType);
+      }
+    }
+
+    this._uploadListenerFlag = this._upload.hasListeners();
+    this.body = body;
+    this._uploadCompleteFlag = this.body === null;
+    this._timedOutFlag = false;
+    this._sendFlag = true;
+
+    this._fireEvent('loadstart', 0, 0);
+    if (!this._uploadCompleteFlag && this._uploadListenerFlag) {
+      this._fireUploadEvent('loadstart', 0, this.getRequestBodySize());
+    }
+
+    // Other interactions are done through the mock's response methods
+    if (this._readyState !== MockXhr.OPENED || !this._sendFlag) {
+      return;
+    }
+
+    this._timeoutReference = Date.now();
+    this._scheduleRequestTimeout();
+
+    // Hook for XMLHttpRequest.send(). Execute in an empty callstack
+    if (typeof this.onSend === 'function') {
+      // Save the callback in case it changes before it has a chance to run
+      const { onSend } = this;
+      setTimeout(() => onSend.call(this, this), 0);
+    }
+    if (typeof MockXhr.onSend === 'function') {
+      // Save the callback in case it changes before it has a chance to run
+      const { onSend } = MockXhr;
+      setTimeout(() => onSend.call(this, this), 0);
+    }
+  }
+
+  /**
+   * Abort the request.
+   * https://xhr.spec.whatwg.org/#the-abort()-method
+   */
+  abort() {
+    this._terminateRequest();
+
+    if ((this._readyState === MockXhr.OPENED && this._sendFlag)
+      || this._readyState === MockXhr.HEADERS_RECEIVED
+      || this._readyState === MockXhr.LOADING) {
+      this._requestErrorSteps('abort');
+    }
+
+    if (this._readyState === MockXhr.DONE) {
+      // No readystatechange event is dispatched.
+      this._readyState = MockXhr.UNSENT;
+      this._response = this._networkErrorResponse();
+    }
+  }
+
+  //////////////
+  // Response //
+  //////////////
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-status
+   *
+   * @returns {number} status attribute
+   */
+  get status() {
+    return this._response.status;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {number} value
+   */
+  set status(value) { return value; }
+
+  /**
+   * https://xhr.spec.whatwg.org/#the-statustext-attribute
+   *
+   * @returns {string} statusText attribute
+   */
+  get statusText() {
+    return this._response.statusMessage;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {string} value
+   */
+  set statusText(value) { return value; }
+
+  /**
+   * Get a response header value.
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-getresponseheader
+   *
+   * @param {string} name header name
+   * @returns {string} header value
+   */
+  getResponseHeader(name) {
+    return this._response.headers.getHeader(name);
+  }
+
+  /**
+   * Get all response headers as a string.
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-getallresponseheaders
+   *
+   * @returns {string} concatenated headers
+   */
+  getAllResponseHeaders() {
+    return this._response.headers.getAll();
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-overridemimetype
+   *
+   * @param {string} mime MIME type
+   */
+  overrideMimeType(/* mime */) {
+    if (this._readyState === MockXhr.LOADING || this._readyState === MockXhr.DONE) {
+      throwError('InvalidStateError');
+    }
+    // noop
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-responsetype
+   *
+   * @returns {string} responseType attribute
+   */
+  get responseType() {
+    return this._responseType || '';
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-responsetype
+   *
+   * @param {string} value responseType value
+   */
+  set responseType(value) {
+    // Since this library is meant to run on node, skip the steps involving the Window object.
+    if (this._readyState === MockXhr.LOADING || this._readyState === MockXhr.DONE) {
+      throwError('InvalidStateError');
+    }
+
+    // The spec doesn't mandate throwing anything on invalid values since values must be of type
+    // XMLHttpRequestResponseType. Observed browser behavior is to ignore invalid values.
+    const responseTypes = ['', 'arraybuffer', 'blob', 'document', 'json', 'text'];
+    if (responseTypes.includes(value)) {
+      this._responseType = value;
+    }
+  }
+
+  /**
+   * https://xhr.spec.whatwg.org/#the-response-attribute
+   *
+   * @returns {*} response
+   */
+  get response() {
+    if (this.responseType === '' || this.responseType === 'text') {
+      if (this._readyState !== MockXhr.LOADING && this._readyState !== MockXhr.DONE) {
+        return '';
+      }
+
+      // No support for charset decoding as outlined in https://xhr.spec.whatwg.org/#text-response
+      return this._response.body === null ? '' : this._response.body;
+    }
+
+    if (this._readyState !== MockXhr.DONE) {
+      return null;
+    }
+
+    if (this.responseType === 'json') {
+      if (this._response.body === null) {
+        return null;
+      }
+      try {
+        return JSON.parse(this._response.body);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Other responseTypes are sent as-is. They can be given directly by setResponseBody() anyway.
+    return this._response.body;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {*} value
+   */
+  set response(value) { return value; }
+
+  /**
+   * https://xhr.spec.whatwg.org/#the-responsetext-attribute
+   *
+   * @returns {string} responseText attribute
+   */
+  get responseText() {
+    if (this.responseType !== '' && this.responseType !== 'text') {
+      throwError('InvalidStateError');
+    }
+    if (this._readyState !== MockXhr.LOADING && this._readyState !== MockXhr.DONE) {
+      return '';
+    }
+
+    // No support for charset decoding as outlined in https://xhr.spec.whatwg.org/#text-response
+    return this._response.body === null ? '' : this._response.body;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {string} value
+   */
+  set responseText(value) { return value; }
+
+  /**
+   * https://xhr.spec.whatwg.org/#dom-xmlhttprequest-responsexml
+   *
+   * @returns {*} responseXML attribute
+   */
+  get responseXML() {
+    if (this.responseType !== '' && this.responseType !== 'document') {
+      throwError('InvalidStateError');
+    }
+    if (this._readyState !== MockXhr.DONE) {
+      return null;
+    }
+
+    // Since this library is meant to run on node, there is no support for charset decoding as
+    // outlined in https://xhr.spec.whatwg.org/#text-response
+    // If needed, a document response can be given to setResponseBody() to be returned here.
+    return this._response.body === null ? '' : this._response.body;
+  }
+
+  /**
+   * noop setter
+   *
+   * @param {*} value ignored value
+   * @returns {*} value
+   */
+  set responseXML(value) { return value; }
+
+  ///////////////////////////
+  // Mock response methods //
+  ///////////////////////////
+
+  /**
+   * Note: the non-mocked body size will be larger than this for a multipart/form-data encoded
+   * FormData body since it will include headers, encoding, etc. The value returned by this method
+   * can therefore be seen as a floor value for the real thing that is nonetheless useful to
+   * simulate upload progress events.
+   *
+   * @returns {number} request body's total byte size
+   */
+  getRequestBodySize() {
+    if (!this._sendFlag) {
+      throw new Error('Mock usage error detected.');
+    }
+    return getBodyByteSize(this.body);
+  }
+
+  /**
+   * Fire a request upload progress event.
+   *
+   * @param {number} transmitted bytes transmitted
+   */
+  uploadProgress(transmitted) {
+    if (!this._sendFlag || this._uploadCompleteFlag) {
+      throw new Error('Mock usage error detected.');
+    }
+    if (this._uploadListenerFlag) {
+      // If no listeners were registered before send(), no upload events should be fired.
+      this._fireUploadEvent('progress', transmitted, this.getRequestBodySize());
+    }
+  }
+
+  /**
+   * Complete response method. Sets the response headers and body. Will set the
+   * state to DONE.
+   *
+   * @param {?number} status response http status (default 200)
+   * @param {?object} headers name-value headers (optional)
+   * @param {?*} body response body (default null)
+   * @param {?string} statusText response http status text (optional)
+   */
+  respond(status, headers, body, statusText) {
+    this.setResponseHeaders(status, headers, statusText);
+    this.setResponseBody(body);
+  }
+
+  /**
+   * Set only the response headers. Will change the state to HEADERS_RECEIVED.
+   *
+   * @param {?number} status response http status (default 200)
+   * @param {?object} headers name-value headers (optional)
+   * @param {?string} statusText response http status text (optional)
+   */
+  setResponseHeaders(status, headers, statusText) {
+    if (this._readyState !== MockXhr.OPENED || !this._sendFlag) {
+      throw new Error('Mock usage error detected.');
+    }
+    if (this.body) {
+      this._requestEndOfBody();
+    }
+    status = typeof status === 'number' ? status : 200;
+    const statusMessage = statusText !== undefined ? statusText : getStatusText(status);
+    this._processResponse({
+      status,
+      statusMessage,
+      headers: new HeadersContainer(headers),
+    });
+  }
+
+  /**
+   * Fire a response progress event. Will set the state to LOADING.
+   *
+   * @param {number} transmitted transmitted bytes
+   * @param {number} length total bytes
+   */
+  downloadProgress(transmitted, length) {
+    if (this._readyState !== MockXhr.HEADERS_RECEIVED
+      && this._readyState !== MockXhr.LOADING) {
+      throw new Error('Mock usage error detected.');
+    }
+
+    // Useless condition but follows the spec's wording
+    if (this._readyState === MockXhr.HEADERS_RECEIVED) {
+      this._readyState = MockXhr.LOADING;
+    }
+
+    // As stated in https://xhr.spec.whatwg.org/#the-send()-method
+    // Web compatibility is the reason readystatechange fires more often than
+    // state changes.
+    this._fireReadyStateChange();
+    this._fireEvent('progress', transmitted, length);
+  }
+
+  /**
+   * Set the response body. Will set the state to DONE.
+   *
+   * @param {?*} body response body (default null)
+   */
+  setResponseBody(body = null) {
+    if (!this._sendFlag
+      || (this._readyState !== MockXhr.OPENED
+        && this._readyState !== MockXhr.HEADERS_RECEIVED
+        && this._readyState !== MockXhr.LOADING)) {
+      throw new Error('Mock usage error detected.');
+    }
+    if (this._readyState === MockXhr.OPENED) {
+      // Default "200 - OK" response headers
+      this.setResponseHeaders();
+    }
+
+    // As stated in https://xhr.spec.whatwg.org/#the-send()-method
+    // Web compatibility is the reason readystatechange fires more often than
+    // state changes.
+    this._readyState = MockXhr.LOADING;
+    this._fireReadyStateChange();
+
+    this._response.body = body !== undefined ? body : null;
+    this._handleResponseEndOfBody();
+  }
+
+  /**
+   * Simulate a network error. Will set the state to DONE.
+   */
+  setNetworkError() {
+    if (!this._sendFlag) {
+      throw new Error('Mock usage error detected.');
+    }
+    this._processResponse(this._networkErrorResponse());
+  }
+
+  /**
+   * Simulate a request timeout. Will set the state to DONE.
+   */
+  setRequestTimeout() {
+    if (!this._sendFlag) {
+      throw new Error('Mock usage error detected.');
+    }
+    this._terminateRequest();
+    this._timedOutFlag = true;
+    this._processResponse(this._networkErrorResponse());
+  }
+
+  ///////////////////////////////////
+  // Request and response handling //
+  ///////////////////////////////////
+
+  /**
+   * Note: the "process request body" task is in the MockXhr response methods
+   * Process request end-of-body task. When the whole request is sent.
+   * https://xhr.spec.whatwg.org/#the-send()-method
+   */
+  _requestEndOfBody() {
+    this._uploadCompleteFlag = true;
+
+    if (this._uploadListenerFlag) {
+      // If no listeners were registered before send(), these steps do not run.
+      const length = this.getRequestBodySize();
+      const transmitted = length;
+      this._fireUploadEvent('progress', transmitted, length);
+      this._fireUploadEvent('load', transmitted, length);
+      this._fireUploadEvent('loadend', transmitted, length);
+    }
+  }
+
+  /**
+   * Process response task. When the response headers are received.
+   * https://xhr.spec.whatwg.org/#the-send()-method
+   *
+   * @param {*} response response
+   */
+  _processResponse(response) {
+    this._response = response;
+    this._handleResponseErrors();
+    if (this._isNetworkErrorResponse()) {
+      return;
+    }
+    this._readyState = MockXhr.HEADERS_RECEIVED;
+    this._fireReadyStateChange();
+    if (this._readyState !== MockXhr.HEADERS_RECEIVED) {
+      return;
+    }
+    if (this._response.body === null) {
+      this._handleResponseEndOfBody();
+    }
+    // Further steps are triggered by the MockXhr response methods
+  }
+
+  /**
+   * Handle response end-of-body for response.
+   * https://xhr.spec.whatwg.org/#handle-response-end-of-body
+   */
+  _handleResponseEndOfBody() {
+    this._handleResponseErrors();
+    if (this._isNetworkErrorResponse()) {
+      return;
+    }
+    const length = this._response.body ? this._response.body.length : 0;
+    this._fireEvent('progress', length, length);
+    this._readyState = MockXhr.DONE;
+    this._sendFlag = false;
+    this._fireReadyStateChange();
+    this._fireEvent('load', length, length);
+    this._fireEvent('loadend', length, length);
+  }
+
+  /**
+   * Handle errors for response.
+   * https://xhr.spec.whatwg.org/#handle-errors
+   */
+  _handleResponseErrors() {
+    if (!this._sendFlag) {
+      return;
+    }
+    if (this._timedOutFlag) {
+      // Timeout
+      this._requestErrorSteps('timeout');
+    } else if (this._isNetworkErrorResponse()) {
+      // Network error
+      this._requestErrorSteps('error');
+    }
+  }
+
+  /**
+   * The request error steps for event 'event'.
+   * https://xhr.spec.whatwg.org/#request-error-steps
+   *
+   * @param {string} event event name
+   */
+  _requestErrorSteps(event) {
+    this._readyState = MockXhr.DONE;
+    this._sendFlag = false;
+    this._response = this._networkErrorResponse();
+    this._fireReadyStateChange();
+    if (!this._uploadCompleteFlag) {
+      this._uploadCompleteFlag = true;
+
+      if (this._uploadListenerFlag) {
+        // If no listeners were registered before send(), no upload events should be fired.
+        this._fireUploadEvent(event, 0, 0);
+        this._fireUploadEvent('loadend', 0, 0);
+      }
+    }
+    this._fireEvent(event, 0, 0);
+    this._fireEvent('loadend', 0, 0);
+  }
+
+  ///////////////
+  // Internals //
+  ///////////////
+
+  /**
+   * @returns {object} new network error response object
+   */
+  _networkErrorResponse() {
+    return {
+      type: 'error',
+      status: 0,
+      statusMessage: '',
+      headers: new HeadersContainer(),
+      body: null,
+    };
+  }
+
+  _isNetworkErrorResponse() {
+    return this._response.type === 'error';
+  }
+
+  _terminateRequest() {
+    delete this.method;
+    delete this.url;
+  }
+
+  _newEvent(name, transmitted, length) {
+    return new Event(name, transmitted, length);
+  }
+
+  _fireEvent(name, transmitted, length) {
+    this.dispatchEvent(this._newEvent(name, transmitted, length));
+  }
+
+  _fireUploadEvent(name, transmitted, length) {
+    this._upload.dispatchEvent(this._newEvent(name, transmitted, length));
+  }
+
+  _fireReadyStateChange() {
+    const event = new Event('readystatechange');
+    if (this.onreadystatechange) {
+      this.onreadystatechange(event);
+    }
+    this.dispatchEvent(event);
+  }
+
+  _scheduleRequestTimeout() {
+    // Cancel any previous timeout task
+    if (this._timeoutTask) {
+      clearTimeout(this._timeoutTask);
+    }
+
+    if (this._timeout > 0) {
+      // The timeout delay must be measured relative to the start of fetching
+      // https://xhr.spec.whatwg.org/#the-timeout-attribute
+      const delay = Math.max(0, this._timeout - (Date.now() - this._timeoutReference));
+      this._timeoutTask = setTimeout(() => {
+        if (this._sendFlag) {
+          this.setRequestTimeout();
+        }
+        delete this._timeoutTask;
+      }, delay);
+    }
+  }
+}
+
+// Global flag to enable the effects of the timeout attribute
+MockXhr.timeoutEnabled = true;
+
+/**
+ * The client states
+ * https://xhr.spec.whatwg.org/#states
+ */
+MockXhr.UNSENT = 0;
+MockXhr.OPENED = 1;
+MockXhr.HEADERS_RECEIVED = 2;
+MockXhr.LOADING = 3;
+MockXhr.DONE = 4;
+
+/**
+ * Mock server for responding to XMLHttpRequest mocks from the class MockXhr. Provides simple route
+ * matching and request handlers to make test harness creation easier.
+ */
+class MockXhrServer {
+  /**
+   * Constructor
+   *
+   * @param {MockXhr} xhrMock XMLHttpRequest mock class
+   * @param {?object} routes routes
+   */
+  constructor(xhrMock, routes = {}) {
+    this.MockXhr = xhrMock;
+    this._requests = [];
+    this._routes = {};
+    Object.keys(routes).forEach((method) => {
+      const [matcher, handler] = routes[method];
+      this.addHandler(method, matcher, handler);
+    });
+    xhrMock.onSend = (xhr) => { this._handleRequest(xhr); };
+
+    // Setup a mock request factory for users
+    this.xhrMock = xhrMock; // For backwards compatibility with < 4.1.0
+    this.xhrFactory = () => new this.MockXhr();
+  }
+
+  /**
+   * Install the server's XMLHttpRequest mock in the context. Revert with remove().
+   *
+   * @param {object?} context context object (e.g. global, window)
+   * @returns {MockXhrServer} this
+   */
+  install(context = __webpack_require__.g) {
+    this._savedXMLHttpRequest = context.XMLHttpRequest;
+    this._savedContext = context;
+    context.XMLHttpRequest = this.MockXhr;
+    return this;
+  }
+
+  /**
+   * Remove the server as the global XMLHttpRequest mock. Reverts the actions of install(global).
+   */
+  remove() {
+    if (!this._savedContext) {
+      throw new Error('remove() called without matching install(global).');
+    }
+
+    if (this._savedXMLHttpRequest !== undefined) {
+      this._savedContext.XMLHttpRequest = this._savedXMLHttpRequest;
+      delete this._savedXMLHttpRequest;
+    } else {
+      delete this._savedContext.XMLHttpRequest;
+    }
+    delete this._savedContext;
+  }
+
+  /**
+   * Disable the effects of the timeout attribute on the XMLHttpRequest mock used by the server.
+   */
+  disableTimeout() {
+    this.MockXhr.timeoutEnabled = false;
+  }
+
+  /**
+   * Enable the effects of the timeout attribute on the XMLHttpRequest mock used by the server.
+   */
+  enableTimeout() {
+    this.MockXhr.timeoutEnabled = true;
+  }
+
+  /**
+   * Add a GET request handler.
+   *
+   * @param {string|RegExp|Function} matcher url matcher
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  get(matcher, handler) {
+    return this.addHandler('GET', matcher, handler);
+  }
+
+  /**
+   * Add a POST request handler.
+   *
+   * @param {string|RegExp|Function} matcher url matcher
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  post(matcher, handler) {
+    return this.addHandler('POST', matcher, handler);
+  }
+
+  /**
+   * Add a PUT request handler.
+   *
+   * @param {string|RegExp|Function} matcher url matcher
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  put(matcher, handler) {
+    return this.addHandler('PUT', matcher, handler);
+  }
+
+  /**
+   * Add a DELETE request handler.
+   *
+   * @param {string|RegExp|Function} matcher url matcher
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  delete(matcher, handler) {
+    return this.addHandler('DELETE', matcher, handler);
+  }
+
+  /**
+   * Add a request handler.
+   *
+   * @param {string} method HTTP method
+   * @param {string|RegExp|Function} matcher url matcher
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  addHandler(method, matcher, handler) {
+    // Match the processing done in MockXHR for the method name
+    method = normalizeHTTPMethodName(method);
+
+    if (!this._routes[method]) {
+      this._routes[method] = [];
+    }
+    this._routes[method].push({
+      matcher,
+      handler,
+      count: 0,
+    });
+    return this;
+  }
+
+  /**
+   * Set the default request handler for requests that don't match any route.
+   *
+   * @param {object|Function|object[]|Function[]} handler request handler
+   * @returns {MockXhrServer} this
+   */
+  setDefaultHandler(handler) {
+    this._defaultRoute = {
+      handler,
+      count: 0,
+    };
+    return this;
+  }
+
+  /**
+   * Return 404 responses for requests that don't match any route.
+   *
+   * @returns {MockXhrServer} this
+   */
+  setDefault404() {
+    return this.setDefaultHandler({ status: 404 });
+  }
+
+  /**
+   * @returns {object[]} list of requests received by the server. Entries: { method, url }
+   */
+  getRequestLog() {
+    return this._requests;
+  }
+
+  _handleRequest(xhr) {
+    // Record the request for easier debugging
+    this._requests.push({
+      method: xhr.method,
+      url: xhr.url,
+      headers: xhr.requestHeaders.getHash(),
+      body: xhr.body,
+    });
+
+    const route = this._findFirstMatchingRoute(xhr) || this._defaultRoute;
+    if (route) {
+      // Routes can have arrays of handlers. Each one is used once and the last one is used if out
+      // of elements.
+      let { handler } = route;
+      if (Array.isArray(handler)) {
+        handler = handler[Math.min(handler.length - 1, route.count)];
+      }
+      route.count += 1;
+
+      if (typeof handler === 'function') {
+        handler(xhr);
+      } else {
+        xhr.respond(handler.status, handler.headers, handler.body, handler.statusText);
+      }
+    }
+  }
+
+  _findFirstMatchingRoute(xhr) {
+    const method = normalizeHTTPMethodName(xhr.method);
+    if (!this._routes[method]) {
+      return undefined;
+    }
+
+    const { url } = xhr;
+    return this._routes[method].find((route) => {
+      const { matcher } = route;
+      if (typeof matcher === 'function') {
+        return matcher(url);
+      } else if (matcher instanceof RegExp) {
+        return matcher.test(url);
+      }
+      return matcher === url;
+    });
+  }
+}
+
+/**
+ * Create a new "local" MockXhr subclass. This makes it easier to have self-contained unit tests
+ * since "global" hooks can be registered directly on the subclass. These hooks don't need to then
+ * be removed after tests because they are local to the new subclass.
+ *
+ * @returns {MockXhr} new MockXhr subclass
+ */
+function newMockXhr() {
+  class LocalMockXhr extends MockXhr {
+    constructor() {
+      super();
+
+      // Call the local onCreate hook on the new mock instance
+      if (typeof LocalMockXhr.onCreate === 'function') {
+        LocalMockXhr.onCreate(this);
+      }
+    }
+
+    // Override the parent method to enable the local MockXhr instance's
+    // onSend() hook
+    send(...args) {
+      super.send(...args);
+
+      // Execute in an empty callstack
+      if (typeof LocalMockXhr.onSend === 'function') {
+        // Save the callback in case it changes before it has a chance to run
+        const { onSend } = LocalMockXhr;
+        setTimeout(() => onSend.call(this, this), 0);
+      }
+    }
+  }
+
+  // Override the parent class' flag to enable the effects of the timeout attribute
+  LocalMockXhr.timeoutEnabled = true;
+  return LocalMockXhr;
+}
+
+/**
+ * Create a new mock server using MockXhr.
+ *
+ * @returns {MockXhrServer} new mock server
+ */
+function newServer(routes) {
+  return new MockXhrServer(newMockXhr(), routes);
+}
+
+
+
+
+/***/ }),
+
+/***/ "./src/utils.js":
+/*!**********************!*\
+  !*** ./src/utils.js ***!
+  \**********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+const flatten = __webpack_require__(/*! flat */ "./node_modules/flat/index.js");
+const Hashes = __webpack_require__(/*! jshashes */ "./node_modules/jshashes/hashes.js");
+var SHA256 =  new Hashes.SHA256
+
+function isValidJSONString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+exports.isValidJSONString = isValidJSONString
+
+const Send = XMLHttpRequest.prototype.send;
+const Open = XMLHttpRequest.prototype.open;
+const SetRequestHeader = XMLHttpRequest.prototype.setRequestHeader;
+exports.Send = Send
+exports.Open = Open
+exports.SetRequestHeader = SetRequestHeader
+
+function onRecordStop() {
+    let test_name = sessionStorage.getItem("testName");
+    let appid = sessionStorage.getItem("appid");
+    if (test_name != undefined && appid != undefined && test_name != "" && appid != "") {
+        fetch("http://localhost:8081/api/deps", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                app_id: appid,
+                test_name: test_name,
+                // deps: mapToObj(depArr),
+                deps: JSON.parse(sessionStorage.getItem("depArr") || "")
+            }),
+        }).then(res => console.log(res));
+    }
+    XMLHttpRequest.prototype.send = Send
+    XMLHttpRequest.prototype.open = Open
+    XMLHttpRequest.prototype.setRequestHeader = SetRequestHeader
+    sessionStorage.removeItem("depArr")
+    sessionStorage.removeItem("testName")
+    sessionStorage.removeItem("appid")
+    sessionStorage.removeItem("mode")
+}
+exports.onRecordStop = onRecordStop
+
+function getResponseHeaders(headers) {
+    // Convert the header string into an array
+    // of individual headers
+    const arr = headers.trim().split(/[\r\n]+/);
+    // Create a map of header names to values
+    const headerMap = {};
+    arr.forEach(function (line) {
+        const parts = line.split(": ");
+        const header = parts.shift();
+        const value = parts.join(": ");
+        if (typeof header === typeof "string" && header !== undefined) {
+            headerMap[header] = value;
+        }
+    });
+    return headerMap;
+}
+exports.getResponseHeaders = getResponseHeaders
+
+function getQueryParams(rawUrl){
+    const urlArr = rawUrl.split("?");
+    var paramKeys = "";
+    const url = urlArr[0];
+    if (urlArr.length > 1) {
+        var params = urlArr[1].split("&");
+        params.forEach(function (el) {
+            paramKeys += "/"+el.split("=")[0];
+        });
+        paramKeys += "/"
+    }
+    return {url, paramKeys}
+}
+exports.getQueryParams = getQueryParams
+
+function getRequestHeaders(headerObj){
+    if(headerObj != undefined && headerObj != null) {
+        let headers = Object.keys(headerObj), headerKeys = ""
+        headers.forEach((key) => headerKeys += key.toLowerCase()+",")
+        return headerKeys
+    }
+    return ""
+}
+exports.getRequestHeaders = getRequestHeaders
+
+exports.ProcessXmlSend = function(xml, mode, ...args){
+    let rawUrl = args[0], requestBody = args[1], requestHeaders = args[2], method = args[3], url="", paramKeys=""
+    if(rawUrl != undefined){
+        const res = getQueryParams(rawUrl)
+        url = res.url
+        paramKeys = res.paramKeys
+    }
+    let flattenJSON = (requestBody !== null && requestBody !== undefined) ? JSON.stringify( Object.keys(flatten(isValidJSONString(requestBody) ? JSON.parse(requestBody) : requestBody)) ) : "";
+    if(flattenJSON == "[]"){
+        flattenJSON = []
+    }
+    let headerKeys = getRequestHeaders(requestHeaders)
+
+    let hashPwd = SHA256.hex(String(method).toUpperCase() + url + paramKeys + headerKeys + flattenJSON)
+    if(mode == "record"){
+        let storedDepArrString = sessionStorage.getItem("depArr");
+        let resp = xml.response
+        if (storedDepArrString != null) {
+            let arr = JSON.parse(storedDepArrString);
+            arr.push({ [hashPwd]: {
+                    status: xml.status,
+                    headers: getResponseHeaders(xml.getAllResponseHeaders()),
+                    body: resp,
+                    response_type: xml.responseType
+                }
+            });
+            sessionStorage.setItem("depArr", JSON.stringify(arr));
+        }
+        else {
+            sessionStorage.setItem("depArr", JSON.stringify([{ [hashPwd]: {
+                    status: xml.status,
+                    headers: getResponseHeaders(xml.getAllResponseHeaders()),
+                    body: resp,
+                    response_type: xml.responseType
+                }
+            }]));
+        }
+    }
+    else if(mode == "test"){
+        let depArr = JSON.parse(sessionStorage.getItem("depArr") || "[]");
+        let responseHeaders = { 'Content-Type': 'application/json' };
+        let response = '{ "message": "Success!" }';
+        let status = 200, matchedDepp = false
+        depArr = depArr.filter((el) => {
+            // eslint-disable-next-line no-prototype-builtins
+            if (!el.hasOwnProperty(hashPwd) || matchedDepp) {
+                return true;
+            }
+            status = el[hashPwd].status
+            responseHeaders = el[hashPwd].headers
+            response = el[hashPwd].body
+            matchedDepp = true
+            return false
+        });
+        sessionStorage.setItem("depArr", JSON.stringify(depArr));
+        xml.respond(status, responseHeaders, response);
+    }
+}
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+var exports = __webpack_exports__;
+/*!************************!*\
+  !*** ./src/kscript.js ***!
+  \************************/
+/* eslint-disable no-global-assign */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-unused-vars */
+
+const MockXMLHttpRequest = __webpack_require__(/*! mock-xmlhttprequest */ "./node_modules/mock-xmlhttprequest/dist/mock-xmlhttprequest.esm.js");
+const MockXhr = MockXMLHttpRequest.newMockXhr();
+const {isValidJSONString, onRecordStop, Send, Open, SetRequestHeader, getResponseHeaders, getQueryParams, getRequestHeaders, ProcessXmlSend} = __webpack_require__(/*! ./utils */ "./src/utils.js")
+
+function RecordXMLRequests() {
+    XMLHttpRequest.prototype.open = function (...args) {
+        this.requestArr = args;
+        return Open.apply(this, args);
+    };
+    // Override the existing setRequestHeader function so that it stores the headers
+    XMLHttpRequest.prototype.setRequestHeader = function (header, value) {
+        // Call the SetRequestHeader function first
+        // so we get exceptions if we are in an erronous state etc.
+        SetRequestHeader.apply(this, [header, value]);
+        // Create a headers map if it does not exist
+        if (!this.headers) {
+            this.headers = {};
+        }
+        // Create a list for the header that if it does not exist
+        if (!this.headers[header]) {
+            this.headers[header] = [];
+        }
+        // Add the value to the header
+        this.headers[header].push(value);
+    };
+    XMLHttpRequest.prototype.send = function (...args) {
+        this.addEventListener("readystatechange", function (e) {
+            let isPushed = false
+            if (((this.readyState >= 3 && this.status > 0 && this.response!=undefined )) && !isPushed ) {
+                ProcessXmlSend(this, "record", this.requestArr[1], args[0], this.headers, this.requestArr[0])
+                isPushed = true
+            }
+        });
+        const x = Send.apply(this, args);
+        return x;
+    };
+}
+
+var originalXMLHttpRequest = XMLHttpRequest;
+function registerXML() {
+    const mode = sessionStorage.getItem("mode");
+    switch (mode) {
+        case "record":
+            RecordXMLRequests();
+            break;
+        case "test":
+             // Mock JSON response
+            MockXhr.onSend = (xhr) => {
+                ProcessXmlSend(xhr, "test", xhr.url, xhr.body, xhr.requestHeaders.getHash(), xhr.method)
+            };
+            XMLHttpRequest = MockXhr;
+            break;
+        default:
+            if (mode != null) {
+                console.error("received unknown keploy mode", mode)
+            }
+    }
+}
+
+// TODO why is the eventListener declared here? 
+document.addEventListener("kselenium", function (event) {
+    // TODO this should really be a switch case
+    const meta = event.detail;
+    switch (meta.event) {
+        case "recordingStarted":
+            sessionStorage.setItem("testName", meta.testName);
+            sessionStorage.setItem("app", meta.app);
+            sessionStorage.setItem("mode", "record");
+            registerXML();
+            break;
+        case "recordingStopped":
+            onRecordStop()
+            break;
+        case "projectLoaded":
+            sessionStorage.setItem("app", meta.app);
+            break;
+        case "playbackStopped":
+            sessionStorage.removeItem("depArr")
+            sessionStorage.removeItem("testName")
+            sessionStorage.removeItem("app")
+            sessionStorage.removeItem("mode")
+            XMLHttpRequest = originalXMLHttpRequest;
+            break
+        case "playbackStarted":
+            if (mode == null) {
+                sessionStorage.setItem("testName", meta.testName);
+                sessionStorage.setItem("app", meta.app);
+                sessionStorage.setItem("mode", "test");
+                registerXML();
+            }
+        default:
+            console.error("unsupported selenium event", meta.event)
+    }
+});
+
+registerXML()
+
+exports["default"] = registerXML;
+
+})();
+
+/******/ })()
+;
+//# sourceMappingURL=kscript.js.map
