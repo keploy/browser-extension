@@ -1,0 +1,5 @@
+/**
+ * mock-xmlhttprequest v7.0.4
+ * (c) 2021 Bertrand Guay-Paquet
+ * @license ISC
+ */
