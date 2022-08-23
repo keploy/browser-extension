@@ -1,12 +1,12 @@
 {
     "name": "keploy-plugin",
-    "description": "",
-    "version": "0.0.1",
-    "homepage": "http://chrome.google.com/webstore",
-    "author": "ENTER YOUR NAME HERE",
+    "description": "Selenium extension to automatically record and mock the backend calls using Keploy for testing. This requires keploy server running.",
+    "version": "0.1.3",
+    "homepage": "keploy.io",
+    "author": "Keploy",
     "repository": {
         "type": "git",
-        "url": "ENTER GIT REPO URL"
+        "url": "https://github.com/keploy/browser-extension"
     },
     "scripts": {
         "start": "xt-build -e dev -w",
@@ -56,7 +56,7 @@
             {
                 "name": "kscript",
                 "src": "./src/kscript.js"
-            }, 
+            },
             {
                 "name": "utils",
                 "src": "./src/utils.js"
