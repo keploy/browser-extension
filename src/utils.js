@@ -20,8 +20,9 @@ exports.Open = Open
 exports.SetRequestHeader = SetRequestHeader
 
 function onRecordStop() {
-    let test_name = sessionStorage.getItem("testName");
-    let appid = sessionStorage.getItem("appid");
+    const kctx = JSON.parse(sessionStorage.getItem("kctx"))
+    let test_name = kctx.testName;
+    let appid = kctx.app;
     if (test_name != undefined && appid != undefined && test_name != "" && appid != "") {
         fetch("http://localhost:8081/api/deps", {
             method: "POST",
@@ -43,6 +44,7 @@ function onRecordStop() {
     sessionStorage.removeItem("testName")
     sessionStorage.removeItem("appid")
     sessionStorage.removeItem("mode")
+    sessionStorage.removeItem("kctx")
 }
 exports.onRecordStop = onRecordStop
 

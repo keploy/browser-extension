@@ -42,7 +42,8 @@ function RecordXMLRequests() {
 
 var originalXMLHttpRequest = XMLHttpRequest;
 function registerXML() {
-    const mode = sessionStorage.getItem("mode");
+    // const mode = sessionStorage.getItem("mode");
+    const mode = JSON.parse(sessionStorage.getItem("kctx")).mode
     switch (mode) {
         case "record":
             RecordXMLRequests();
@@ -67,6 +68,11 @@ document.addEventListener("kselenium", function (event) {
     const meta = event.detail;
     switch (meta.event) {
         case "recordingStarted":
+            sessionStorage.setItem("kctx", JSON.stringify({
+                testName: meta.testName,
+                app: meta.app,
+                mode: "record"
+            }))
             sessionStorage.setItem("testName", meta.testName);
             sessionStorage.setItem("app", meta.app);
             sessionStorage.setItem("mode", "record");
@@ -80,6 +86,7 @@ document.addEventListener("kselenium", function (event) {
             break;
         case "playbackStopped":
             sessionStorage.removeItem("depArr")
+            sessionStorage.removeItem("kctx")
             sessionStorage.removeItem("testName")
             sessionStorage.removeItem("app")
             sessionStorage.removeItem("mode")
@@ -87,6 +94,11 @@ document.addEventListener("kselenium", function (event) {
             break
         case "playbackStarted":
             if (mode == null) {
+                sessionStorage.setItem("kctx", JSON.stringify({
+                    testName: meta.testName,
+                    app: meta.app,
+                    mode: "test"
+                }))
                 sessionStorage.setItem("testName", meta.testName);
                 sessionStorage.setItem("app", meta.app);
                 sessionStorage.setItem("mode", "test");

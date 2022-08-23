@@ -12,7 +12,7 @@ function injectFetchScript (tabId, appid, message, tabListener) {
                 const docs = JSON.parse( requestDeps.responseText )
                 sessionStorage.setItem("depArr", JSON.stringify(docs[0].deps))
                 var dataObj = {"event":"playbackStarted", "testName":testName, "appid": appid, "tabId": tabid};
-                let storeEvent = new CustomEvent('keploy', {"detail":dataObj});
+                let storeEvent = new CustomEvent('kselenium', {"detail":dataObj});
                 document.dispatchEvent(storeEvent);
             }
           },
