@@ -3,8 +3,8 @@
     "short_name": "K-Plugin",
     "description": "Selenium extension to automatically record and mock the backend calls using Keploy for testing. This requires keploy server running.",
     "homepage_url": "https://keploy.io/",
-    "version": "0.1.3",
-    "version_name": "0.1.3",
+    "version": "0.1.4",
+    "version_name": "0.1.4",
     "default_locale": "en",
     "minimum_chrome_version": "88",
     "icons": {
