@@ -105,4 +105,8 @@ typings/
 
 .DS_Store
 
+dist/
+
+
 dist.zip
+release.zip
